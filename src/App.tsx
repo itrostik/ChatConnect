@@ -1,24 +1,14 @@
-import { useEffect, useState } from "react";
-
-import axios from "axios";
+import Login from "./components/Login.tsx";
+import {useState} from "react";
+import Register from "./components/Register.tsx";
 
 function App() {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    async function getData() {
-      const data = await axios.get(
-        "https://chatconnectapp.netlify.app/api/users",
-      );
-      setData(data.data);
-    }
-
-    getData();
-  }, []);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")))
   return (
     <div>
-      {data.map((user) => (
-        <div key={user.id}>{user.username}</div>
-      ))}
+      {!user ? <Login setUser={setUser}/> : ""}
+      {!user ? <Register setUser={setUser}/> : ""}
+      {user ? <div>Добро пожаловать, {user.username}</div> : ""}
     </div>
   );
 }
