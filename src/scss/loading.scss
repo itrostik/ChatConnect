@@ -1,0 +1,27 @@
+.loading__block{
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading__logo{
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.loading__text{
+  color: #A4A4A4;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.dark__logo{
+  color: #000;
+}
+
+.light__logo{
+  color: #ffffff;
+}
