@@ -1,0 +1,20 @@
+.header{
+  display: flex;
+  width: 100%;
+  min-height: 80px;
+  padding: 20px 0;
+  gap: 20px;
+  margin: 0 0 100px 0;
+  align-items: center;
+  &__logo{
+    font-size: 22px;
+    font-weight: 800;
+    flex: 1 1 auto;
+  }
+  &__logo-dark{
+    color: #FFF;
+  }
+  &__logo-light{
+    color: #000000;
+  }
+}
