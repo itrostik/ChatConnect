@@ -1,14 +1,13 @@
 import {useForm, SubmitHandler} from "react-hook-form";
 import axios from "axios";
 
-import {Inputs} from "../@types/types.ts";
+import {Auth, Inputs} from "../@types/types.ts";
+import "../scss/register.scss"
 
-
-const Register = ({setUser}) => {
+const Register = ({theme, setUser}: Auth) => {
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid}
   } = useForm<Inputs>({
     defaultValues: {
       password: '',
@@ -28,23 +27,36 @@ const Register = ({setUser}) => {
     })
     if (user.data.message) {
       alert(user.data.message)
-    }
-    else {
+    } else {
       setUser(user.data)
       localStorage.setItem("user", JSON.stringify(user.data))
     }
   }
   return (
-    <div>
-      <h1>Регистрация</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" {...register("login", {required: true, maxLength: 30})} placeholder='Логин'/>
-        <input type="text" {...register("username", {required: true, maxLength: 30})} placeholder='Юзернейм'/>
-        <input type="text" {...register("firstName", {required: true, maxLength: 30})} placeholder='Имя'/>
-        <input type="text" {...register("lastName", {required: true, maxLength: 30})} placeholder='Фамилия'/>
-        <input type="password" {...register("password", {required: true, maxLength: 30})} placeholder='Пароль'/>
-        <button type="submit">Отправить</button>
-      </form>
+    <div className="registration">
+      {theme === "Dark" ?
+        <>
+          <h1 className="registration__name registration__name-dark">Регистрация</h1>
+          <form onSubmit={handleSubmit(onSubmit)} className="registration__form">
+            <input type="text" {...register("login", {required: true, maxLength: 30})} placeholder='Логин' className="registration__input"/>
+            <input type="text" {...register("username", {required: true, maxLength: 30})} placeholder='Юзернейм' className="registration__input"/>
+            <input type="text" {...register("firstName", {required: true, maxLength: 30})} placeholder='Имя' className="registration__input"/>
+            <input type="text" {...register("lastName", {required: true, maxLength: 30})} placeholder='Фамилия' className="registration__input"/>
+            <input type="password" {...register("password", {required: true, maxLength: 30})} placeholder='Пароль' className="registration__input"/>
+            <button type="submit" className="registration__button registration__button-dark">Отправить</button>
+          </form>
+        </> :
+        <>
+          <h1 className="registration__name registration__name-light">Регистрация</h1>
+          <form onSubmit={handleSubmit(onSubmit)} className="registration__form">
+            <input type="text" {...register("login", {required: true, maxLength: 30})} placeholder='Логин' className="registration__input"/>
+            <input type="text" {...register("username", {required: true, maxLength: 30})} placeholder='Юзернейм' className="registration__input"/>
+            <input type="text" {...register("firstName", {required: true, maxLength: 30})} placeholder='Имя' className="registration__input"/>
+            <input type="text" {...register("lastName", {required: true, maxLength: 30})} placeholder='Фамилия' className="registration__input"/>
+            <input type="password" {...register("password", {required: true, maxLength: 30})} placeholder='Пароль' className="registration__input"/>
+            <button type="submit" className="registration__button registration__button-light">Отправить</button>
+          </form>
+        </>}
     </div>
   );
 };

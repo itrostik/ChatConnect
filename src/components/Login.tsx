@@ -1,10 +1,10 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import {useForm, SubmitHandler} from "react-hook-form";
 import axios from "axios";
 
-import {Inputs} from "../@types/types.ts";
+import {Auth, Inputs} from "../@types/types.ts";
+import "../scss/login.scss"
 
-
-const Login = ({setUser}) => {
+const Login = ({theme, setUser}: Auth) => {
   const {
     register,
     handleSubmit,
@@ -23,13 +23,28 @@ const Login = ({setUser}) => {
     localStorage.setItem("user", JSON.stringify(user.data))
   }
   return (
-    <div>
-      <h1>Войти</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" defaultValue='' {...register("login", {required: true, maxLength: 30})} placeholder='Логин'/>
-        <input type="password" defaultValue='' {...register("password", {required: true, maxLength: 30})}  placeholder='Пароль'/>
-        <button type="submit">Отправить</button>
-      </form>
+    <div className="login">
+      {theme === "Dark" ?
+        <>
+          <h1 className="login__name login__name-dark">Войти</h1>
+          <form onSubmit={handleSubmit(onSubmit)} className="login__form">
+            <input type="text" {...register("login", {required: true, maxLength: 30})} placeholder='Логин'
+                   className="login__input"/>
+            <input type="password" {...register("password", {required: true, maxLength: 30})} placeholder='Пароль'
+                   className="login__input"/>
+            <button type="submit" className="login__button login__button-dark">Отправить</button>
+          </form>
+        </> :
+        <>
+          <h1 className="login__name login__name-light">Войти</h1>
+          <form onSubmit={handleSubmit(onSubmit)} className="registration__form">
+            <input type="text" {...register("login", {required: true, maxLength: 30})} placeholder='Логин'
+                   className="login__input"/>
+            <input type="password" {...register("password", {required: true, maxLength: 30})} placeholder='Пароль'
+                   className="login__input"/>
+            <button type="submit" className="login__button login__button-light">Отправить</button>
+          </form>
+        </>}
     </div>
   );
 };
