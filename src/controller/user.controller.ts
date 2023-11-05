@@ -13,12 +13,12 @@ class UserController {
         "insert into users (first_name, last_name, username, login, password_hash) values ($1, $2, $3, $4, $5) returning *",
         [firstName, lastName, username, login, passwordHash],
       );
-      res.json({
+      res.status(201).json({
         ...newUser.rows[0],
         password,
       });
     } else {
-      res.json({
+      res.status(420).json({
         message: "Такой пользователь уже есть в системе",
       });
     }
@@ -26,7 +26,7 @@ class UserController {
 
   async getUsers(req: Request, res: Response) {
     const users = await database.query("select * from users");
-    res.json(users.rows);
+    res.status(200).json(users.rows);
   }
 
   async getUser(req: Request, res: Response) {
@@ -34,7 +34,7 @@ class UserController {
     const user = await database.query("select * from users where id = $1", [
       user_id,
     ]);
-    res.json(user.rows[0]);
+    res.status(200).json(user.rows[0]);
   }
 
   async updateUser(req: Request, res: Response) {
@@ -49,12 +49,12 @@ class UserController {
         "update users set first_name = $1, last_name = $2, username = $3, login = $4, password_hash = $5 where id = $6 returning *",
         [firstName, lastName, username, login, passwordHash, id],
       );
-      res.json({
+      res.status(200).json({
         ...user.rows[0],
         password,
       });
     } else {
-      res.json({
+      res.status(401).json({
         message: "такой логин уже занят",
       });
     }
@@ -66,7 +66,7 @@ class UserController {
       "DELETE from users where id = $1 returning *",
       [user_id],
     );
-    res.json(user.rows[0]);
+    res.status(200).json(user.rows[0]);
   }
 
   async checkUser(req: Request, res: Response) {
@@ -77,18 +77,19 @@ class UserController {
       ]);
       const userPasswordHash = user.rows[0]["password_hash"];
       if (await checkPassword(password, userPasswordHash)) {
-        res.json({
+        res.status(200).json({
           ...user.rows[0],
           password,
         });
       } else {
-        res.json({
+        res.status(401).json({
           message: "неверный логин или пароль",
-        });
+        })
+
       }
     }
     catch (err) {
-      res.json({
+      res.status(401).json({
         message: "неверный логин или пароль",
       })
     }
