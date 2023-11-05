@@ -11,4 +11,5 @@ export type Inputs = {
 export type Auth = {
   theme: string
   setUser: React.Dispatch<any>
+  setIsLoading: React.Dispatch<boolean>
 }
