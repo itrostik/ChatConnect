@@ -19,7 +19,7 @@ class UserController {
       });
     } else {
       res.status(420).json({
-        message: "Такой пользователь уже есть в системе",
+        message: "Пользователь с таким логином уже есть в системе",
       });
     }
   }
@@ -55,7 +55,7 @@ class UserController {
       });
     } else {
       res.status(401).json({
-        message: "такой логин уже занят",
+        message: "Такой логин уже занят",
       });
     }
   }
@@ -83,14 +83,14 @@ class UserController {
         });
       } else {
         res.status(401).json({
-          message: "неверный логин или пароль",
+          message: "Неверный логин или пароль",
         })
 
       }
     }
     catch (err) {
       res.status(401).json({
-        message: "неверный логин или пароль",
+        message: "Неверный логин или пароль",
       })
     }
   }
