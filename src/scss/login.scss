@@ -37,6 +37,7 @@
     color: #000;
     font-size: 14px;
     font-weight: 700;
+    border: 2px solid #000000;
   }
   &__input::placeholder{
     color: rgba(0, 0, 0, 0.30);
@@ -64,4 +65,17 @@
     color: #FFF;
 
   }
+}
+
+.error__input{
+  border: 2px solid #de0000;
+}
+
+.error__text{
+  color: #de0000;
+  text-align: left;
+  padding: 0 15px;
+  margin: 0 auto;
+  max-width: 1000px;
+  width: 100%;
 }

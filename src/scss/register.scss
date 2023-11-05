@@ -64,3 +64,15 @@
   }
 }
 
+.error__input{
+  border: 2px solid #de0000;
+}
+
+.error__text{
+  color: #de0000;
+  text-align: left;
+  padding: 0 15px;
+  margin: 0 auto;
+  max-width: 1000px;
+  width: 100%;
+}
