@@ -18,11 +18,11 @@ function App() {
   return (
     <div className={theme === "Dark" ? "dark" : "light"}>
       <Routes>
-        <Route path="/login" element={!token && !isLoading ? <Login theme={theme} setToken={setToken} setIsLoading={setIsLoading}/> : ""}/>
-        <Route path="/registration" element={!token && !isLoading ? <Register theme={theme} setToken={setToken} setIsLoading={setIsLoading}/> : ""}/>
+        <Route path="/login" element={!isLoading ? <Login theme={theme} token={token} setToken={setToken} setIsLoading={setIsLoading}/> : ""}/>
+        <Route path="/registration" element={!isLoading ? <Register token={token} theme={theme} setToken={setToken} setIsLoading={setIsLoading}/> : ""}/>
         <Route path="/main" element={token ? <Main theme={theme} setTheme={setTheme}/> : ""}/>
       </Routes>
-      {!token && isLoading ? <Loading theme={theme} /> : ""}
+      {isLoading ? <Loading theme={theme} /> : ""}
     </div>
   );
 }
