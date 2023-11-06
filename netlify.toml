@@ -21,18 +21,6 @@ from = "/"
 status = 200
 to = "/.netlify/functions/api/:splat"
 
-[[redirects]]
-force = true
-from = "/upload"
-status = 200
-to = "/.netlify/functions/upload/:splat"
-
-[[redirects]]
-force = true
-from = "/uploads"
-status = 200
-to = "/.netlify/functions/uploads/:splat"
-
 [[headers]]
 for = "/*"
 [headers.values]
