@@ -7,7 +7,7 @@ import Loading from "./components/Loading.tsx";
 import {Route, Routes} from "react-router-dom";
 
 function App() {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")))
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")))
   const [theme, setTheme] = useState(localStorage.getItem("theme"))
   if (!theme) {
     setTheme("Dark")
@@ -18,11 +18,11 @@ function App() {
   return (
     <div className={theme === "Dark" ? "dark" : "light"}>
       <Routes>
-        <Route path="/login" element={!user && !isLoading ? <Login theme={theme} setUser={setUser} setIsLoading={setIsLoading}/> : ""}/>
-        <Route path="/registration" element={!user && !isLoading ? <Register theme={theme} setUser={setUser} setIsLoading={setIsLoading}/> : ""}/>
-        <Route path="/main" element={user ? <Main theme={theme} setTheme={setTheme}/> : ""}/>
+        <Route path="/login" element={!token && !isLoading ? <Login theme={theme} setToken={setToken} setIsLoading={setIsLoading}/> : ""}/>
+        <Route path="/registration" element={!token && !isLoading ? <Register theme={theme} setToken={setToken} setIsLoading={setIsLoading}/> : ""}/>
+        <Route path="/main" element={token ? <Main theme={theme} setTheme={setTheme}/> : ""}/>
       </Routes>
-      {!user && isLoading ? <Loading theme={theme} /> : ""}
+      {!token && isLoading ? <Loading theme={theme} /> : ""}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import {Auth, Inputs} from "../@types/types.ts";
 import "../scss/login.scss"
 import {useState} from "react";
 
-const Login = ({theme, setUser, setIsLoading}: Auth) => {
+const Login = ({theme, setToken, setIsLoading}: Auth) => {
   const [error, setError] = useState(localStorage.getItem("error"))
   const [data, setData] = useState(JSON.parse(localStorage.getItem("data")))
   const {
@@ -23,12 +23,12 @@ const Login = ({theme, setUser, setIsLoading}: Auth) => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsLoading(true)
     try {
-      const user = await axios.post("https://chatconnectapp.netlify.app/api/users/check", {
+      const token = await axios.post("https://chatconnectapp.netlify.app/api/users/check", {
         "login": data.login,
         "password": data.password
       })
-      setUser(user.data)
-      localStorage.setItem("user", JSON.stringify(user.data))
+      setToken(token.data.token)
+      localStorage.setItem("token", JSON.stringify(token.data.token))
       localStorage.removeItem("error")
       localStorage.removeItem("data")
       setIsLoading(false)

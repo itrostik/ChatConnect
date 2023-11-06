@@ -10,6 +10,6 @@ export type Inputs = {
 
 export type Auth = {
   theme: string
-  setUser: React.Dispatch<any>
+  setToken: React.Dispatch<string>
   setIsLoading: React.Dispatch<boolean>
 }

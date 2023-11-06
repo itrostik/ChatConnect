@@ -5,7 +5,7 @@ import {Auth, Inputs} from "../@types/types.ts";
 import "../scss/register.scss"
 import {useState} from "react";
 
-const Register = ({theme, setUser, setIsLoading}: Auth) => {
+const Register = ({theme, setToken, setIsLoading}: Auth) => {
   const [error, setError] = useState(localStorage.getItem("error"))
   const [data, setData] = useState(JSON.parse(localStorage.getItem("data")))
   const {
@@ -25,21 +25,17 @@ const Register = ({theme, setUser, setIsLoading}: Auth) => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsLoading(true)
     try {
-      const user = await axios.post("https://chatconnectapp.netlify.app/api/users", {
+      const token = await axios.post("https://chatconnectapp.netlify.app/api/users", {
         "login": data.login,
         "password": data.password,
         "username": data.username,
         "firstName": data.firstName,
         "lastName": data.lastName,
       })
-      if (user.data.message) {
-        setIsLoading(false)
-        alert(user.data.message)
-      } else {
-        setUser(user.data)
-        localStorage.setItem("user", JSON.stringify(user.data))
-        setIsLoading(false)
-      }
+      setToken(token.data.token)
+      localStorage.setItem("token", JSON.stringify(token.data.token))
+      localStorage.removeItem("data")
+      setIsLoading(false)
     } catch (err) {
       const dataOptions = {
         login: data.login,
@@ -71,9 +67,7 @@ const Register = ({theme, setUser, setIsLoading}: Auth) => {
       } else {
         event.target.className = "registration__input"
       }
-    }
-
-    else {
+    } else {
       if (event.target.value.length > 30) {
         event.target.className = "error__input registration__input"
       } else if (event.target.value.length < 4) {
