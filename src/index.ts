@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import usersRoute from "./routes/user.route";
 import dialogsRoute from "./routes/dialog.route";
 import messagesRoute from "./routes/message.route";
-import { upload } from "./utils/upload.images";
+import { upload, uploadFile } from "./utils/upload.images";
 import cors from "cors";
 
 const app = express();
@@ -10,10 +10,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post("/api/image", upload.single("image"), (req, res) => {
-  res.json({
-    url: `/api/images/${req.file?.originalname}`,
-  });
+app.post("/api/image", upload.single("file"), async (req, res) => {
+  // @ts-ignore
+  if (await uploadFile(req.file, req.file?.originalname)) {
+    res.json({
+      url: `/api/images/${req.file?.originalname}`,
+    });
+  } else {
+    res.json({
+      message: `Что-то пошло не так`,
+    });
+  }
 });
 
 app.use("/api/images", express.static("public"));

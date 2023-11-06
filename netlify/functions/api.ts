@@ -4,7 +4,7 @@ import dialogsRoute from "../../src/routes/dialog.route";
 import messagesRoute from "../../src/routes/message.route";
 import serverless from "serverless-http";
 import cors from "cors";
-import { upload } from "../../src/utils/upload.images";
+import { upload, uploadFile } from "../../src/utils/upload.images";
 
 const app = express();
 app.use(cors());
@@ -14,10 +14,17 @@ app.get("/", (req: Request, res: Response) => {
   res.redirect("/api");
 });
 
-app.post("/api/image/", upload.single("image"), (req, res) => {
-  res.json({
-    url: `/api/images/${req.file?.originalname}`,
-  });
+app.post("/api/image", upload.single("file"), async (req, res) => {
+  // @ts-ignore
+  if (await uploadFile(req.file, req.file?.originalname)) {
+    res.json({
+      url: `https://ejjdyiohraasggghnykr.supabase.co/storage/v1/object/public/images/avatars/${req.file?.originalname}`,
+    });
+  } else {
+    res.json({
+      message: `Что-то пошло не так`,
+    });
+  }
 });
 
 app.use("/api/images/", express.static("public"));
