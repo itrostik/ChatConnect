@@ -23,7 +23,7 @@ app.post("/api/image", upload.single("file"), async (req, res) => {
   }
 });
 
-app.use("/api/images", express.static("avatars"));
+app.use("/api/images", express.static("public"));
 
 app.use("/api", usersRoute);
 app.use("/api", dialogsRoute);

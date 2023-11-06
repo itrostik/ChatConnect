@@ -26,7 +26,7 @@ export async function uploadFile(file: any): Promise<boolean> {
 
 const storage = multer.diskStorage({
   destination: (_, __, callback) => {
-    callback(null, "avatars");
+    callback(null, "public");
   },
   filename: (_, file, callback) => {
     callback(null, file.originalname);

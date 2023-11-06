@@ -31,7 +31,7 @@ app.post("/api/image", upload.single("file"), async (req, res) => {
   }
 });
 
-app.use("/api/images/", express.static(__dirname + "avatars"));
+app.use("/api/images/", express.static(__dirname + "public"));
 
 app.use(express.urlencoded({ extended: true }));
 
