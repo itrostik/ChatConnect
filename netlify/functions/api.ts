@@ -35,4 +35,7 @@ app.use("/api/", usersRoute);
 app.use("/api/", dialogsRoute);
 app.use("/api/", messagesRoute);
 
+app.listen(process.env.PORT || 4444, () => {
+  console.log("SERVER OK");
+});
 export const handler = serverless(app);

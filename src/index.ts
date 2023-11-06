@@ -33,6 +33,6 @@ app.get("/", (req: Request, res: Response) => {
   res.redirect("/api");
 });
 
-app.listen(4444, () => {
+app.listen(process.env.PORT || 4444, () => {
   console.log("SERVER OK");
 });
