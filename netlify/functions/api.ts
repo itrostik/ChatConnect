@@ -16,7 +16,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.post("/api/image", upload.single("file"), async (req, res) => {
   // @ts-ignore
-  if (await uploadFile(req.file, req.file?.originalname)) {
+  if (await uploadFile(req.file)) {
     res.json({
       url: `https://ejjdyiohraasggghnykr.supabase.co/storage/v1/object/public/images/avatars/${req.file?.originalname}`,
     });
@@ -27,7 +27,7 @@ app.post("/api/image", upload.single("file"), async (req, res) => {
   }
 });
 
-app.use("/api/images/", express.static("public"));
+app.use("/api/images/", express.static("avatars"));
 
 app.use(express.urlencoded({ extended: true }));
 
