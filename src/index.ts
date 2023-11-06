@@ -3,8 +3,11 @@ import usersRoute from "./routes/user.route";
 import dialogsRoute from "./routes/dialog.route";
 import messagesRoute from "./routes/message.route";
 import { upload } from "./utils/upload.images";
+import cors from "cors";
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 app.post("/upload", upload.single("image"), (req, res) => {
