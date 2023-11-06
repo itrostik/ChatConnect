@@ -5,9 +5,8 @@ import "./scss/app.scss"
 import Main from "./components/Main.tsx";
 import Loading from "./components/Loading.tsx";
 import {Route, Routes} from "react-router-dom";
-
 function App() {
-  const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")))
+  const [token, setToken] = useState(localStorage.getItem("token"))
   const [theme, setTheme] = useState(localStorage.getItem("theme"))
   if (!theme) {
     setTheme("Dark")
@@ -20,7 +19,7 @@ function App() {
       <Routes>
         <Route path="/login" element={!isLoading ? <Login theme={theme} token={token} setToken={setToken} setIsLoading={setIsLoading}/> : ""}/>
         <Route path="/registration" element={!isLoading ? <Register token={token} theme={theme} setToken={setToken} setIsLoading={setIsLoading}/> : ""}/>
-        <Route path="/main" element={token ? <Main theme={theme} setTheme={setTheme}/> : ""}/>
+        <Route path="/main" element={!isLoading ? <Main theme={theme} token={token} setTheme={setTheme}/>: ""}/>
       </Routes>
       {isLoading ? <Loading theme={theme} /> : ""}
     </div>

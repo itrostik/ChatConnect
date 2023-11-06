@@ -1,12 +1,14 @@
 import "../../scss/header.scss";
-import { Dispatch, SetStateAction } from "react";
+import {Dispatch, SetStateAction} from "react";
 
 const Header = ({
                   theme,
                   setTheme,
+                  user
                 }: {
-  theme: String;
+  theme: string;
   setTheme: Dispatch<SetStateAction<string>>;
+  user: object
 }) => {
   function themeChange() {
     if (theme === "Dark") {
@@ -18,26 +20,27 @@ const Header = ({
       localStorage.setItem("theme", "Dark")
     }
   }
+
   return (
     <>
       {theme === "Dark" ? (
         <header className="header">
           <div className="header__logo header__logo-dark">ChatConnect</div>
           <div className="header__theme" onClick={() => themeChange()}>
-            <img src="/img/moon.svg" alt="" />
+            <img src="/img/moon.svg" alt=""/>
           </div>
           <div className="header__user">
-            <img src="/img/user-dark.svg" alt="" />
+            <img src="/img/user-dark.svg" alt=""/>
           </div>
         </header>
       ) : (
         <header className="header">
           <div className="header__logo header__logo-light">ChatConnect</div>
           <div className="header__theme" onClick={() => themeChange()}>
-            <img src="/img/sun.svg" alt="" />
+            <img src="/img/sun.svg" alt=""/>
           </div>
           <div className="header__user">
-            <img src="/img/user-light.svg" alt="" />
+            <img src="/img/user-light.svg" alt=""/>
           </div>
         </header>
       )}
