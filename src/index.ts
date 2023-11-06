@@ -10,13 +10,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post("/upload", upload.single("image"), (req, res) => {
+app.post("/api/upload", upload.single("image"), (req, res) => {
   res.json({
-    url: `/uploads/${req.file?.originalname}`,
+    url: `/api/uploads/${req.file?.originalname}`,
   });
 });
 
-app.use("/uploads", express.static("uploads"));
+app.use("/api/uploads", express.static("uploads"));
 
 app.use("/api", usersRoute);
 app.use("/api", dialogsRoute);
