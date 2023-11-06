@@ -17,6 +17,12 @@ to = "/.netlify/functions/api/:splat"
 
 [[redirects]]
 force = true
+from = "/"
+status = 200
+to = "/.netlify/functions/api/:splat"
+
+[[redirects]]
+force = true
 from = "/upload"
 status = 200
 to = "/.netlify/functions/upload/:splat"

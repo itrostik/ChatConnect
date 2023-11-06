@@ -14,13 +14,13 @@ app.get("/", (req: Request, res: Response) => {
   res.redirect("/api");
 });
 
-app.post("/upload", upload.single("image"), (req, res) => {
+app.post("/upload/", upload.single("image"), (req, res) => {
   res.json({
     url: `/uploads/${req.file?.originalname}`,
   });
 });
 
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads/", express.static("uploads"));
 
 app.use(express.urlencoded({ extended: true }));
 
