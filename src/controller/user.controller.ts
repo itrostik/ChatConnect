@@ -1,9 +1,12 @@
 import database from "../utils/database";
-import { Request, Response } from "express";
-import { checkPassword, hashPassword } from "../utils/password.hash";
+import {Request, Response} from "express";
+
+import {checkPassword, hashPassword} from "../utils/password.hash";
+import {getToken} from "../utils/jwt";
+
 class UserController {
   async createUser(req: Request, res: Response) {
-    const { firstName, lastName, username, login, password } = req.body;
+    const {firstName, lastName, username, login, password} = req.body;
     const user = await database.query("select * from users where login = $1", [
       login,
     ]);
@@ -13,9 +16,9 @@ class UserController {
         "insert into users (first_name, last_name, username, login, password_hash) values ($1, $2, $3, $4, $5) returning *",
         [firstName, lastName, username, login, passwordHash],
       );
+      const token = getToken(newUser.rows[0])
       res.status(201).json({
-        ...newUser.rows[0],
-        password,
+        token
       });
     } else {
       res.status(420).json({
@@ -38,7 +41,7 @@ class UserController {
   }
 
   async updateUser(req: Request, res: Response) {
-    const { firstName, lastName, username, login, password, id } = req.body;
+    const {firstName, lastName, username, login, password, id} = req.body;
     const userLogin = await database.query(
       "select * from users where login = $1",
       [login],
@@ -49,9 +52,9 @@ class UserController {
         "update users set first_name = $1, last_name = $2, username = $3, login = $4, password_hash = $5 where id = $6 returning *",
         [firstName, lastName, username, login, passwordHash, id],
       );
+      const token = getToken(user.rows[0])
       res.status(200).json({
-        ...user.rows[0],
-        password,
+        token
       });
     } else {
       res.status(401).json({
@@ -70,16 +73,16 @@ class UserController {
   }
 
   async checkUser(req: Request, res: Response) {
-    const { login, password } = req.body;
-    try{
+    const {login, password} = req.body;
+    try {
       const user = await database.query("select * from users where login = $1", [
         login,
       ]);
       const userPasswordHash = user.rows[0]["password_hash"];
       if (await checkPassword(password, userPasswordHash)) {
+        const token = getToken(user.rows[0])
         res.status(200).json({
-          ...user.rows[0],
-          password,
+          token
         });
       } else {
         res.status(401).json({
@@ -87,8 +90,7 @@ class UserController {
         })
 
       }
-    }
-    catch (err) {
+    } catch (err) {
       res.status(401).json({
         message: "Неверный логин или пароль",
       })
