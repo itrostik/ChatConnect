@@ -15,7 +15,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/api/image", upload.single("file"), async (req, res) => {
-  res.send(req.body);
+  res.json({ file: req.file });
 });
 
 app.post("/api/image", upload.single("file"), async (req, res) => {
