@@ -10,7 +10,6 @@ export type Inputs = {
 };
 
 export type Auth = {
-  theme: string;
   setToken: React.Dispatch<string>;
   setIsLoading: React.Dispatch<boolean>;
   token: string;
@@ -23,4 +22,9 @@ export type User = {
   login: string;
   passwordHash: string;
   username: string;
+};
+
+export type Theme = {
+  dark: string;
+  light: string;
 };
