@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { User } from "../../../../@types/types.ts";
-import { ThemeContext } from "../../../../contexts/ThemeContext.ts";
+import { User } from "../../../@types/types.ts";
+import { ThemeContext } from "../../../contexts/ThemeContext.ts";
 import styles from "./Header.module.scss";
 
 const Header = ({ user }: { user: User }) => {

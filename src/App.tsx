@@ -1,27 +1,50 @@
-import Login from "./components/Login.tsx";
-import {useState} from "react";
-import Register from "./components/Register.tsx";
-import "./scss/app.scss"
-import Main from "./components/Main.tsx";
-import Loading from "./components/Loading.tsx";
-import {Route, Routes} from "react-router-dom";
+import Login from "./components/Login/Login.tsx";
+import { useState } from "react";
+import Register from "./components/Register/Register.tsx";
+import "./scss/app.scss";
+import Main from "./components/Main/Main.tsx";
+import Loading from "./components/UI/Loading/Loading.tsx";
+import { Route, Routes } from "react-router-dom";
 function App() {
-  const [token, setToken] = useState(localStorage.getItem("token"))
-  const [theme, setTheme] = useState(localStorage.getItem("theme"))
-  if (!theme) {
-    setTheme("Dark")
-  }
-  const [isLoading, setIsLoading] = useState(false)
-  if (theme === "Dark") document.body.style.background = "#000"
-  else if (theme === "Light") document.body.style.background = "#fff"
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [isLoading, setIsLoading] = useState(false);
   return (
-    <div className={theme === "Dark" ? "dark" : "light"}>
+    <div className={"layout"}>
       <Routes>
-        <Route path="/login" element={!isLoading ? <Login theme={theme} token={token} setToken={setToken} setIsLoading={setIsLoading}/> : ""}/>
-        <Route path="/registration" element={!isLoading ? <Register token={token} theme={theme} setToken={setToken} setIsLoading={setIsLoading}/> : ""}/>
-        <Route path="/main" element={!isLoading ? <Main theme={theme} token={token} setTheme={setTheme}/>: ""}/>
+        <Route
+          path="/login"
+          element={
+            !isLoading ? (
+              <Login
+                token={token}
+                setToken={setToken}
+                setIsLoading={setIsLoading}
+              />
+            ) : (
+              ""
+            )
+          }
+        />
+        <Route
+          path="/registration"
+          element={
+            !isLoading ? (
+              <Register
+                token={token}
+                setToken={setToken}
+                setIsLoading={setIsLoading}
+              />
+            ) : (
+              ""
+            )
+          }
+        />
+        <Route
+          path="/main"
+          element={!isLoading ? <Main token={token} /> : ""}
+        />
       </Routes>
-      {isLoading ? <Loading theme={theme} /> : ""}
+      {isLoading ? <Loading /> : ""}
     </div>
   );
 }
