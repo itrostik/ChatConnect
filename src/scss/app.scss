@@ -1,22 +1,17 @@
 @import "reset";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+@import "variables";
 
-*{
+
+* {
   font-family: 'Montserrat', sans-serif;
 }
 
-.dark{
-  background: #000;
-  color: #fff;
-  width: 100%;
-  min-height: 100vh;
-  padding: 0 15px;
-}
 
-.light{
-  background: #fff;
-  color: #000;
+.layout {
+  background: var(--background);
   width: 100%;
   min-height: 100vh;
   padding: 0 15px;
+  color: var(--color);
 }
