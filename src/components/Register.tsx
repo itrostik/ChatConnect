@@ -3,13 +3,15 @@ import axios from "axios";
 
 import { Auth, Inputs } from "../@types/types.ts";
 import "../scss/register.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 
 const Register = ({ theme, token, setToken, setIsLoading }: Auth) => {
   if (token) {
     return <Navigate to="/main" />;
   }
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState(localStorage.getItem("error"));
   const [data, setData] = useState(JSON.parse(localStorage.getItem("data")));
   const {
@@ -59,6 +61,15 @@ const Register = ({ theme, token, setToken, setIsLoading }: Auth) => {
     }
   };
 
+  useEffect(() => {
+    const setImage = async () => {
+      if (selectedFile) {
+        await handleUpload();
+      }
+    };
+    setImage();
+  }, [selectedFile]);
+
   function changeInput(event: any) {
     if (localStorage.getItem("error")) {
       event.target.className = "registration__input";
@@ -96,14 +107,10 @@ const Register = ({ theme, token, setToken, setIsLoading }: Auth) => {
     }
   }
 
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
-  const [imageSrc, setImageSrc] = useState("");
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
   };
-
   const handleUpload = async () => {
     try {
       const formData = new FormData();
@@ -112,7 +119,6 @@ const Register = ({ theme, token, setToken, setIsLoading }: Auth) => {
         "http://localhost:4444/api/upload",
         formData,
       );
-      setImageSrc(response.data.imageUrl);
       setImageUrl(response.data.imageUrl);
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -130,25 +136,47 @@ const Register = ({ theme, token, setToken, setIsLoading }: Auth) => {
           <h1 className="registration__name registration__name-dark">
             Регистрация
           </h1>
-          <input type="file" onChange={handleFileChange} />
-          <button onClick={handleUpload}>Upload</button>
-          {imageSrc ? <img src={imageSrc} width={50} height={50}></img> : ""}
+          <div className="input__wrapper">
+            <span className="input__head">Загрузите файл c компьютера</span>
+            <input
+              name="file"
+              type="file"
+              id="input__file"
+              className="input input__file"
+              onChange={handleFileChange}
+            />
+            <label htmlFor="input__file" className="input__file-button">
+              <span className="input__file-icon-wrapper">
+                <img
+                  className="input__file-icon"
+                  src="/img/download.svg"
+                  alt="Выбрать файл"
+                  width="25"
+                />
+              </span>
+              <span className="input__file-button-text">Выберите файл</span>
+            </label>
+          </div>
+          <span className="input__head">Или вставьте ссылку на картинку</span>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="registration__form"
           >
-            <input
-              type="text"
-              value={imageUrl}
-              {...register("avatarUrl", {})}
-              placeholder={"Ссылка на аватарку (необязательно)"}
-              className={
-                !error
-                  ? "registration__input registration__input-dark"
-                  : "error__input registration__input"
-              }
-              onInput={(event) => changeUrl(event)}
-            />
+            <label className={"label"}>
+              <input
+                type="text"
+                value={imageUrl}
+                {...register("avatarUrl", {})}
+                placeholder={"Ссылка на аватарку (необязательно)"}
+                className={
+                  !error
+                    ? "registration__input registration__input-dark"
+                    : "error__input registration__input"
+                }
+                onInput={(event) => changeUrl(event)}
+              />
+              {imageUrl ? <img src={imageUrl} className={"image"}></img> : ""}
+            </label>
             <input
               type="text"
               {...register("firstName", {
