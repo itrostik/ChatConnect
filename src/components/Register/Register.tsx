@@ -10,7 +10,10 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
     return <Navigate to="/main" />;
   }
   const [selectedFile, setSelectedFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState<string>("");
+  if (localStorage.getItem("data")) {
+    setImageUrl(JSON.parse(localStorage.getItem("data")).avatarUrl);
+  }
   const [error, setError] = useState(localStorage.getItem("error"));
   const [data, setData] = useState(JSON.parse(localStorage.getItem("data")));
   const [isLoadingImage, setIsLoadingImage] = useState(false);
@@ -20,7 +23,7 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
-      avatarUrl: data?.avatarUrl,
+      avatarUrl: imageUrl,
       password: data?.password,
       login: data?.login,
       firstName: data?.firstName,
@@ -55,7 +58,7 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
         firstName: data.firstName,
         lastName: data.lastName,
         username: data.username,
-        avatarUrl: data.avatarUrl,
+        avatarUrl: imageUrl,
       };
       setData(dataOptions);
       setError(err.response.data.message);
