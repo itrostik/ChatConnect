@@ -11,7 +11,6 @@ import { change } from "../../../redux/slices/themeSlice.ts";
 const Header = ({ user }: { user: User }) => {
   const theme = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
-  console.log(theme);
   const [users, setUsers] = useState<User[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -78,7 +77,7 @@ const Header = ({ user }: { user: User }) => {
                 key={user.id}
               >
                 <div className={styles["modal-user__image"]}>
-                  {user.avatar ? (
+                  {user?.avatar ? (
                     <img src={user.avatar} alt="user" />
                   ) : (
                     <svg
@@ -110,8 +109,8 @@ const Header = ({ user }: { user: User }) => {
         <div className={styles["header__theme-img"]}></div>
       </div>
       <div className={styles["header__user"]}>
-        {user.avatar ? (
-          <img src={user.avatar} alt="" className={styles["image-user"]} />
+        {user?.avatar ? (
+          <img src={user?.avatar} alt="" className={styles["image-user"]} />
         ) : (
           <svg
             width="30"

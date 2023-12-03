@@ -4,6 +4,9 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Auth, Inputs } from "../../../@types/types.ts";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { change } from "../../../redux/slices/userSlice.ts";
+import { jwtDecode } from "jwt-decode";
 
 export default function Login({ token, setToken, setIsLoading }: Auth) {
   if (token) {
@@ -11,6 +14,7 @@ export default function Login({ token, setToken, setIsLoading }: Auth) {
   }
   const [error, setError] = useState(localStorage.getItem("error"));
   const [data, setData] = useState(JSON.parse(localStorage.getItem("data")));
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -29,12 +33,13 @@ export default function Login({ token, setToken, setIsLoading }: Auth) {
         login: data.login,
         password: data.password,
       });
-      console.log(token);
       setToken(token.data.token);
       localStorage.setItem("token", JSON.stringify(token.data.token));
       localStorage.removeItem("error");
       localStorage.removeItem("data");
       setIsLoading(false);
+      const user = jwtDecode(token.data.token);
+      dispatch(change(user));
     } catch (err) {
       const dataOptions = {
         login: data.login,

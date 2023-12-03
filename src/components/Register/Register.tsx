@@ -4,11 +4,15 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Auth, Inputs } from "../../../@types/types.ts";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { change } from "../../../redux/slices/userSlice.ts";
 
 export default function Register({ token, setToken, setIsLoading }: Auth) {
   if (token) {
     return <Navigate to="/main" />;
   }
+  const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   if (localStorage.getItem("data")) {
@@ -51,6 +55,8 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
       localStorage.setItem("token", JSON.stringify(token.data.token));
       localStorage.removeItem("data");
       setIsLoading(false);
+      const user = jwtDecode(token.data.token);
+      dispatch(change(user));
     } catch (err) {
       const dataOptions = {
         login: data.login,
