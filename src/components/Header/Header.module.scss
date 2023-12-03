@@ -9,7 +9,6 @@
   &__logo{
     font-size: 22px;
     font-weight: 800;
-    flex: 1 1 auto;
     color: var(--color)
   }
   &__theme-img{
@@ -17,6 +16,34 @@
     width: 30px;
     height: 30px;
     background: var(--backgroundTheme);
+  }
+  &__search{
+    flex: 1 1 auto;
+    label{
+      background: var(--color);
+      border-radius: 5px;
+      padding: 10px;
+      max-width: 500px;
+      display: flex;
+      gap: 10px;
+      svg{
+        width: 20px;
+        height: 20px;
+      }
+      svg path{
+        fill: var(--background)
+      }
+    }
+
+    input{
+      width: 100%;
+      font-size: 14px;
+      color: var(--background);
+    }
+
+    input::placeholder{
+      color: rgba(94, 94, 94, 0.5);
+    }
   }
 }
 

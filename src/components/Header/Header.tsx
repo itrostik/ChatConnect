@@ -1,10 +1,19 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { User } from "../../../@types/types.ts";
 import { ThemeContext } from "../../../contexts/ThemeContext.ts";
 import styles from "./Header.module.scss";
+import axios from "axios";
 
+import _ from "lodash";
 const Header = ({ user }: { user: User }) => {
   const themeContext = useContext(ThemeContext);
+
+  async function search(event: React.ChangeEvent<HTMLInputElement>) {
+    const response = await axios.get<User[]>("http://localhost:4444/api/users");
+    let users = response.data;
+    users = users.filter((user) => user.username.includes(event.target.value));
+  }
+  const debounceHandler = _.debounce(search, 300);
 
   function themeChange() {
     if (themeContext.theme === "dark") {
@@ -20,6 +29,28 @@ const Header = ({ user }: { user: User }) => {
   return (
     <header className={styles["header"]}>
       <div className={styles["header__logo"]}>ChatConnect</div>
+      <div className={styles["header__search"]}>
+        <label>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            id="search"
+          >
+            <path
+              fill="#000000"
+              d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"
+            ></path>
+          </svg>
+
+          <input
+            type="text"
+            placeholder={"Поиск"}
+            onInput={(event: React.ChangeEvent<HTMLInputElement>) =>
+              debounceHandler(event)
+            }
+          />
+        </label>
+      </div>
       <div className={styles["header__theme"]} onClick={() => themeChange()}>
         <div className={styles["header__theme-img"]}></div>
       </div>
