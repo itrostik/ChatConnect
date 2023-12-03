@@ -1,16 +1,25 @@
-import { useContext, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { User } from "../../../@types/types.ts";
-import { ThemeContext } from "../../../contexts/ThemeContext.ts";
 import styles from "./Header.module.scss";
 import axios from "axios";
 
 import _ from "lodash";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../redux/store.ts";
+import { change } from "../../../redux/slices/themeSlice.ts";
 
 const Header = ({ user }: { user: User }) => {
-  const themeContext = useContext(ThemeContext);
+  const theme = useSelector((state: RootState) => state.theme);
+  const dispatch = useDispatch();
+  console.log(theme);
   const [users, setUsers] = useState<User[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   async function search() {
     if (inputRef.current.value.trim().length > 0) {
@@ -28,19 +37,13 @@ const Header = ({ user }: { user: User }) => {
 
   const debounceHandler = _.debounce(search, 300);
 
-  function themeChange() {
-    if (themeContext.theme === "dark") {
-      themeContext.setTheme("light");
-      localStorage.setItem("theme", "light");
-    }
-    if (themeContext.theme === "light") {
-      themeContext.setTheme("dark");
-      localStorage.setItem("theme", "dark");
-    }
-  }
-
   function chooseDialog() {
     setOpenModal(false);
+  }
+
+  function changeTheme() {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    dispatch(change(nextTheme));
   }
 
   return (
@@ -103,7 +106,7 @@ const Header = ({ user }: { user: User }) => {
           ""
         )}
       </div>
-      <div className={styles["header__theme"]} onClick={() => themeChange()}>
+      <div className={styles["header__theme"]} onClick={() => changeTheme()}>
         <div className={styles["header__theme-img"]}></div>
       </div>
       <div className={styles["header__user"]}>
