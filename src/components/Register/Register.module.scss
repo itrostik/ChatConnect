@@ -65,6 +65,14 @@
     }
   }
   .error__input{
+    border-radius: 10px;
+    background: #E9E9E9;
+    padding: 15px 50px 15px 15px;
+    max-width: 1000px;
+    width: 100%;
+    color: #000;
+    font-size: 14px;
+    font-weight: 700;
     border: 2px solid #de0000;
   }
   .error__text{
@@ -127,6 +135,7 @@
 .input__file-button-text {
   line-height: 1;
   margin-top: 1px;
+  text-align: center;
 }
 
 .input__file-button {

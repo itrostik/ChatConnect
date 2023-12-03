@@ -13,6 +13,7 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
   const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState(localStorage.getItem("error"));
   const [data, setData] = useState(JSON.parse(localStorage.getItem("data")));
+  const [isLoadingImage, setIsLoadingImage] = useState(false);
   const {
     register,
     handleSubmit,
@@ -28,6 +29,10 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
     },
     mode: "onChange",
   });
+  function navigate() {
+    localStorage.removeItem("data");
+    localStorage.removeItem("error");
+  }
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsLoading(true);
     try {
@@ -37,7 +42,7 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
         username: data.username,
         firstName: data.firstName,
         lastName: data.lastName,
-        avatarUrl: data.avatarUrl,
+        avatarUrl: imageUrl,
       });
       setToken(token.data.token);
       localStorage.setItem("token", JSON.stringify(token.data.token));
@@ -75,18 +80,22 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
   };
   const handleUpload = async () => {
     try {
+      setIsLoadingImage(true);
       const formData = new FormData();
       if (selectedFile) formData.append("image", selectedFile);
       const response = await axios.post(
         "http://localhost:4444/api/upload",
         formData,
       );
-      setImageUrl(response.data.imageUrl);
+      if (response.data.imageUrl) {
+        setImageUrl(response.data.imageUrl);
+      }
     } catch (error) {
       console.error("Error uploading image:", error);
+    } finally {
+      setIsLoadingImage(false);
     }
   };
-
   function changeUrl(event) {
     setImageUrl(event.target.value);
   }
@@ -105,6 +114,8 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
             id="input__file"
             className={[styles["input"], styles["input__file"]].join(" ")}
             onChange={handleFileChange}
+            accept={".jpg, .jpeg, .png"}
+            disabled={isLoadingImage}
           />
           <label htmlFor="input__file" className={styles["input__file-button"]}>
             <span className={styles["input__file-icon-wrapper"]}>
@@ -116,7 +127,7 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
               />
             </span>
             <span className={styles["input__file-button-text"]}>
-              Выберите файл
+              {!isLoadingImage ? "Выберите файл" : "Загрузка..."}
             </span>
           </label>
         </div>
@@ -130,8 +141,10 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
           <label className={styles["label"]}>
             <input
               type="text"
-              value={imageUrl}
-              {...register("avatarUrl", {})}
+              defaultValue={imageUrl}
+              {...register("avatarUrl", {
+                required: false,
+              })}
               placeholder={"Ссылка на аватарку (необязательно)"}
               className={styles["registration__input"]}
               onInput={(event) => changeUrl(event)}
@@ -257,7 +270,11 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
           </button>
           <div className={styles["registration__text"]}>
             Уже есть аккаунт?{" "}
-            <Link to="/login" className={styles["registration__link"]}>
+            <Link
+              to="/login"
+              onClick={() => navigate()}
+              className={styles["registration__link"]}
+            >
               Войти
             </Link>
           </div>

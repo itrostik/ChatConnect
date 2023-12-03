@@ -49,6 +49,12 @@ export default function Login({ token, setToken, setIsLoading }: Auth) {
       setIsLoading(false);
     }
   };
+
+  function navigate() {
+    localStorage.removeItem("data");
+    localStorage.removeItem("error");
+  }
+
   console.log(Object.keys(errors));
   return (
     <div className={styles["login"]}>
@@ -104,7 +110,11 @@ export default function Login({ token, setToken, setIsLoading }: Auth) {
           </button>
           <div className={styles["login__text"]}>
             Нет аккаунта?{" "}
-            <Link to="/registration" className={styles["login__link"]}>
+            <Link
+              to="/registration"
+              onClick={() => navigate()}
+              className={styles["login__link"]}
+            >
               Регистрация
             </Link>
           </div>
