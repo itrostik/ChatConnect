@@ -16,7 +16,7 @@ export type Auth = {
 };
 
 export type User = {
-  avatar: string;
+  avatar?: string;
   firstName: string;
   lastName: string;
   login: string;

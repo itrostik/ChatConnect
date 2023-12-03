@@ -13,6 +13,7 @@
     color: var(--color)
   }
   &__theme-img{
+    cursor: pointer;
     width: 30px;
     height: 30px;
     background: var(--backgroundTheme);

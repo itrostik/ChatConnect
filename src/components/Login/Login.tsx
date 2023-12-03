@@ -25,13 +25,11 @@ export default function Login({ token, setToken, setIsLoading }: Auth) {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsLoading(true);
     try {
-      const token = await axios.post(
-        "https://chatconnectapp.netlify.app/api/users/check",
-        {
-          login: data.login,
-          password: data.password,
-        },
-      );
+      const token = await axios.post("http://localhost:4444/api/users/check", {
+        login: data.login,
+        password: data.password,
+      });
+      console.log(token);
       setToken(token.data.token);
       localStorage.setItem("token", JSON.stringify(token.data.token));
       localStorage.removeItem("error");
