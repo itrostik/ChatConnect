@@ -76,13 +76,18 @@
 }
 
 .header__modal-user{
+  cursor: pointer;
   color: var(--background);
   display: flex;
   gap: 10px;
   align-items: center;
-  padding: 10px 0;
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--background);
+  padding: 10px;
+  border-radius: 5px;
+  //&:not(:last-child) {
+  //  border-bottom: 1px solid var(--background);
+  //}
+  &:hover{
+    background: #E9E9E9;
   }
 }
 

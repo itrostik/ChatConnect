@@ -1,27 +1,31 @@
-import React, { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { User } from "../../../@types/types.ts";
 import { ThemeContext } from "../../../contexts/ThemeContext.ts";
 import styles from "./Header.module.scss";
 import axios from "axios";
 
 import _ from "lodash";
+
 const Header = ({ user }: { user: User }) => {
   const themeContext = useContext(ThemeContext);
   const [users, setUsers] = useState<User[]>([]);
-  const [openModal, setOpenModal] = useState(false);
-  async function search(event: React.ChangeEvent<HTMLInputElement>) {
-    if (event.target.value.trim().length > 0) {
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  async function search() {
+    if (inputRef.current.value.trim().length > 0) {
       const response = await axios.get<User[]>(
         "http://localhost:4444/api/users",
       );
       let users = response.data;
       users = users.filter((user) =>
-        user.username.includes(event.target.value),
+        user.username.includes(inputRef.current.value),
       );
       setOpenModal(true);
       setUsers(users);
     }
   }
+
   const debounceHandler = _.debounce(search, 300);
 
   function themeChange() {
@@ -33,6 +37,10 @@ const Header = ({ user }: { user: User }) => {
       themeContext.setTheme("dark");
       localStorage.setItem("theme", "dark");
     }
+  }
+
+  function chooseDialog() {
+    setOpenModal(false);
   }
 
   return (
@@ -54,15 +62,18 @@ const Header = ({ user }: { user: User }) => {
           <input
             type="text"
             placeholder={"Поиск"}
-            onInput={(event: React.ChangeEvent<HTMLInputElement>) =>
-              debounceHandler(event)
-            }
+            ref={inputRef}
+            onInput={() => debounceHandler()}
           />
         </label>
         {openModal && users.length > 0 ? (
           <div className={styles["header__search-modal"]}>
             {users.map((user) => (
-              <div className={styles["header__modal-user"]}>
+              <div
+                className={styles["header__modal-user"]}
+                onClick={() => chooseDialog()}
+                key={user.id}
+              >
                 <div className={styles["modal-user__image"]}>
                   {user.avatar ? (
                     <img src={user.avatar} alt="user" />
