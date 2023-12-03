@@ -19,6 +19,7 @@
   }
   &__search{
     flex: 1 1 auto;
+    position: relative;
     label{
       background: var(--color);
       border-radius: 5px;
@@ -34,7 +35,6 @@
         fill: var(--background)
       }
     }
-
     input{
       width: 100%;
       font-size: 14px;
@@ -43,6 +43,24 @@
 
     input::placeholder{
       color: rgba(94, 94, 94, 0.5);
+    }
+    &-modal{
+      border-radius: 5px;
+      overflow-y: scroll;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      gap: 10px;
+      &::-webkit-scrollbar{
+        width: 0;
+        height: 0;
+      }
+      position: absolute;
+      top: 50px;
+      width: 100%;
+      max-width: 500px;
+      max-height: 100px;
+      background: var(--color);
     }
   }
 }
@@ -54,5 +72,28 @@
   object-fit: cover;
   path{
     fill: var(--color)
+  }
+}
+
+.header__modal-user{
+  color: var(--background);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--background);
+  }
+}
+
+.modal-user__image img{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.image-user{
+  path{
+    fill: var(--background)
   }
 }
