@@ -26,6 +26,7 @@
       padding: 10px;
       max-width: 500px;
       display: flex;
+      align-items: center;
       gap: 10px;
       svg{
         width: 20px;
@@ -33,6 +34,11 @@
       }
       svg path{
         fill: var(--background)
+      }
+      div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
     input{
