@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { User } from "../../../@types/types.ts";
+import { UserType } from "../../../@types/userType.ts";
 import styles from "./Header.module.scss";
 import axios from "axios";
 
@@ -8,11 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store.ts";
 import { change } from "../../../redux/slices/themeSlice.ts";
 import { useNavigate } from "react-router-dom";
+import { choose } from "../../../redux/slices/dialogSlice.ts";
+import { DialogType } from "../../../@types/dialogType.ts";
 
-const Header = ({ user }: { user: User }) => {
+const Header = ({ user }: { user: UserType }) => {
   const theme = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserType[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -36,13 +38,14 @@ const Header = ({ user }: { user: User }) => {
 
   async function search() {
     if (inputRef.current.value.trim().length > 0) {
-      const response = await axios.get<User[]>(
+      const response = await axios.get<UserType[]>(
         "http://localhost:4444/api/users",
       );
       let users = response.data;
       users = users.filter((user) =>
         user.username.includes(inputRef.current.value),
       );
+      users = users.filter((userItem) => userItem.id !== user.id);
       setOpenModal(true);
       setUsers(users);
     } else {
@@ -58,8 +61,23 @@ const Header = ({ user }: { user: User }) => {
     navigate("/login");
   }
 
-  function chooseDialog(event: React.MouseEvent<HTMLDivElement>) {
+  async function chooseDialog(
+    event: React.MouseEvent<HTMLDivElement>,
+    userId: string,
+  ) {
     event.stopPropagation();
+    const response = await axios.get<DialogType[]>(
+      `http://localhost:4444/api/dialogs/user/${user.id}`,
+    );
+    const dialogs = response.data;
+    const dialog = dialogs.find(
+      (dialog) => dialog.user_id === userId || dialog.user2_id === userId,
+    );
+    if (dialog) {
+      dispatch(choose(dialog));
+    } else {
+      dispatch(choose("1"));
+    }
     reset();
   }
 
@@ -110,7 +128,7 @@ const Header = ({ user }: { user: User }) => {
             {users.map((user) => (
               <div
                 className={styles["header__modal-user"]}
-                onClick={(event) => chooseDialog(event)}
+                onClick={(event) => chooseDialog(event, user.id)}
                 key={user.id}
               >
                 <div className={styles["modal-user__image"]}>
