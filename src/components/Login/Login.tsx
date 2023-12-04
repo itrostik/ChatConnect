@@ -2,7 +2,7 @@ import styles from "./Login.module.scss";
 import { Link, Navigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Inputs } from "../../../@types/inputType.ts";
+import { InputsType } from "../../../@types/inputType.ts";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { change } from "../../../redux/slices/userSlice.ts";
@@ -31,14 +31,14 @@ export default function Login({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<InputsType>({
     defaultValues: {
       password: data?.password,
       login: data?.login,
     },
     mode: "onChange",
   });
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<InputsType> = async (data) => {
     setIsLoading(true);
     try {
       const token = await axios.post("http://localhost:4444/api/users/check", {

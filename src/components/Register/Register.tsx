@@ -2,7 +2,7 @@ import styles from "./Register.module.scss";
 import { Link, Navigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Inputs } from "../../../@types/inputType.ts";
+import { InputsType } from "../../../@types/inputType.ts";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,7 +36,7 @@ export default function Register({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<InputsType>({
     defaultValues: {
       avatarUrl: imageUrl,
       password: data?.password,
@@ -53,7 +53,7 @@ export default function Register({
     localStorage.removeItem("error");
   }
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<InputsType> = async (data) => {
     setIsLoading(true);
     try {
       const token = await axios.post("http://localhost:4444/api/users", {
