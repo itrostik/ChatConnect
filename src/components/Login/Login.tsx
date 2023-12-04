@@ -2,7 +2,7 @@ import styles from "./Login.module.scss";
 import { Link, Navigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Inputs } from "../../../@types/types.ts";
+import { Inputs } from "../../../@types/inputType.ts";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { change } from "../../../redux/slices/userSlice.ts";

@@ -22,6 +22,11 @@ const Header = ({ user }: { user: User }) => {
     document.addEventListener("click", () => {
       setOpenModal(false);
     });
+    return () => {
+      document.removeEventListener("click", () => {
+        setOpenModal(false);
+      });
+    };
   }, []);
 
   useEffect(() => {
@@ -40,6 +45,9 @@ const Header = ({ user }: { user: User }) => {
       );
       setOpenModal(true);
       setUsers(users);
+    } else {
+      setOpenModal(false);
+      setUsers([]);
     }
   }
 
