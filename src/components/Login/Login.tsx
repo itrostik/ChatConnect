@@ -1,12 +1,13 @@
 import styles from "./Login.module.scss";
 import { Link, Navigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Inputs } from "../../../@types/types.ts";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { change } from "../../../redux/slices/userSlice.ts";
 import { jwtDecode } from "jwt-decode";
+import { RootState } from "../../../redux/store.ts";
 
 export default function Login({
   setIsLoading,
@@ -18,6 +19,13 @@ export default function Login({
   }
   const [error, setError] = useState(localStorage.getItem("error"));
   const [data, setData] = useState(JSON.parse(localStorage.getItem("data")));
+  const theme = useSelector((state: RootState) => state.theme);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   const dispatch = useDispatch();
   const {
     register,

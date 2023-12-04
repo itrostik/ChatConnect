@@ -5,8 +5,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Inputs } from "../../../@types/types.ts";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { change } from "../../../redux/slices/userSlice.ts";
+import { RootState } from "../../../redux/store.ts";
 
 export default function Register({
   setIsLoading,
@@ -25,6 +26,12 @@ export default function Register({
   const [error, setError] = useState(localStorage.getItem("error"));
   const [data, setData] = useState(JSON.parse(localStorage.getItem("data")));
   const [isLoadingImage, setIsLoadingImage] = useState(false);
+  const theme = useSelector((state: RootState) => state.theme);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
   const {
     register,
     handleSubmit,
@@ -40,10 +47,12 @@ export default function Register({
     },
     mode: "onChange",
   });
+
   function navigate() {
     localStorage.removeItem("data");
     localStorage.removeItem("error");
   }
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsLoading(true);
     try {
@@ -108,6 +117,7 @@ export default function Register({
       setIsLoadingImage(false);
     }
   };
+
   function changeUrl(event) {
     setImageUrl(event.target.value);
   }
