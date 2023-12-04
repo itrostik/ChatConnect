@@ -6,8 +6,8 @@ import Sidebar from "../Sidebar/Sidebar.tsx";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store.ts";
 
-export default function Main({ token }: { token: string }) {
-  if (!token) {
+export default function Main() {
+  if (!localStorage.getItem("token")) {
     return <Navigate to="/login" />;
   }
   const [activeDialog, setActiveDialog] = useState("");

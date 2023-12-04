@@ -108,3 +108,17 @@
     fill: var(--background)
   }
 }
+
+.header__user{
+  cursor: pointer;
+
+}
+
+.header__exit{
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  svg path{
+    fill: var(--color)
+  }
+}

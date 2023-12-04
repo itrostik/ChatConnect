@@ -6,40 +6,19 @@ import Main from "./components/Main/Main.tsx";
 import Loading from "./components/UI/Loading/Loading.tsx";
 import { Route, Routes } from "react-router-dom";
 function App() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
   const [isLoading, setIsLoading] = useState(false);
   return (
     <div className={"layout"}>
       <Routes>
         <Route
           path="/login"
-          element={
-            !isLoading ? (
-              <Login
-                token={token}
-                setToken={setToken}
-                setIsLoading={setIsLoading}
-              />
-            ) : (
-              ""
-            )
-          }
+          element={!isLoading ? <Login setIsLoading={setIsLoading} /> : ""}
         />
         <Route
           path="/registration"
-          element={
-            !isLoading ? (
-              <Register
-                token={token}
-                setToken={setToken}
-                setIsLoading={setIsLoading}
-              />
-            ) : (
-              ""
-            )
-          }
+          element={!isLoading ? <Register setIsLoading={setIsLoading} /> : ""}
         />
-        <Route path="/" element={!isLoading ? <Main token={token} /> : ""} />
+        <Route path="/" element={!isLoading ? <Main /> : ""} />
       </Routes>
       {isLoading ? <Loading /> : ""}
     </div>

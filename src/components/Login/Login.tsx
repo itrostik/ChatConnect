@@ -1,16 +1,20 @@
 import styles from "./Login.module.scss";
 import { Link, Navigate } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Auth, Inputs } from "../../../@types/types.ts";
+import { Inputs } from "../../../@types/types.ts";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { change } from "../../../redux/slices/userSlice.ts";
 import { jwtDecode } from "jwt-decode";
 
-export default function Login({ token, setToken, setIsLoading }: Auth) {
-  if (token) {
-    return <Navigate to="/main" />;
+export default function Login({
+  setIsLoading,
+}: {
+  setIsLoading: React.Dispatch<boolean>;
+}) {
+  if (localStorage.getItem("token")) {
+    return <Navigate to="/" />;
   }
   const [error, setError] = useState(localStorage.getItem("error"));
   const [data, setData] = useState(JSON.parse(localStorage.getItem("data")));
@@ -33,7 +37,6 @@ export default function Login({ token, setToken, setIsLoading }: Auth) {
         login: data.login,
         password: data.password,
       });
-      setToken(token.data.token);
       localStorage.setItem("token", JSON.stringify(token.data.token));
       localStorage.removeItem("error");
       localStorage.removeItem("data");

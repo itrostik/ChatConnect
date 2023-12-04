@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { User } from "../../../@types/types.ts";
 import styles from "./Header.module.scss";
 import axios from "axios";
@@ -7,6 +7,7 @@ import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store.ts";
 import { change } from "../../../redux/slices/themeSlice.ts";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ user }: { user: User }) => {
   const theme = useSelector((state: RootState) => state.theme);
@@ -14,6 +15,14 @@ const Header = ({ user }: { user: User }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    document.addEventListener("click", () => {
+      setOpenModal(false);
+    });
+  }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -36,7 +45,13 @@ const Header = ({ user }: { user: User }) => {
 
   const debounceHandler = _.debounce(search, 300);
 
-  function chooseDialog() {
+  function exit() {
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
+
+  function chooseDialog(event: React.MouseEvent<HTMLDivElement>) {
+    event.stopPropagation();
     reset();
   }
 
@@ -87,7 +102,7 @@ const Header = ({ user }: { user: User }) => {
             {users.map((user) => (
               <div
                 className={styles["header__modal-user"]}
-                onClick={() => chooseDialog()}
+                onClick={(event) => chooseDialog(event)}
                 key={user.id}
               >
                 <div className={styles["modal-user__image"]}>
@@ -122,7 +137,7 @@ const Header = ({ user }: { user: User }) => {
       <div className={styles["header__theme"]} onClick={() => changeTheme()}>
         <div className={styles["header__theme-img"]}></div>
       </div>
-      <div className={styles["header__user"]}>
+      <div className={styles["header__user"]} onClick={() => console.log()}>
         {user?.avatarUrl ? (
           <img src={user?.avatarUrl} alt="" className={styles["image-user"]} />
         ) : (
@@ -140,6 +155,20 @@ const Header = ({ user }: { user: User }) => {
             />
           </svg>
         )}
+      </div>
+      <div className={styles["header__exit"]} onClick={() => exit()}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          data-name="Layer 1"
+          viewBox="0 0 32 32"
+          id="exit"
+        >
+          <path
+            fill="#fff"
+            d="m16.49 21.49 1.21 1.21 6.71-6.7-6.7-6.71-1.21 1.21 3.09 3.17A6 6 0 0 0 21.47 15h.06H1v2h20.53-.1a6 6 0 0 0-1.84 1.28Z"
+          ></path>
+          <path fill="#fff" d="M9 3v6h2V5h16v22H11v-4H9v6h20V3H9z"></path>
+        </svg>
       </div>
     </header>
   );

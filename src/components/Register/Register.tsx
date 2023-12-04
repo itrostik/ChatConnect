@@ -1,16 +1,20 @@
 import styles from "./Register.module.scss";
 import { Link, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Auth, Inputs } from "../../../@types/types.ts";
+import { Inputs } from "../../../@types/types.ts";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { change } from "../../../redux/slices/userSlice.ts";
 
-export default function Register({ token, setToken, setIsLoading }: Auth) {
-  if (token) {
-    return <Navigate to="/main" />;
+export default function Register({
+  setIsLoading,
+}: {
+  setIsLoading: React.Dispatch<boolean>;
+}) {
+  if (localStorage.getItem("token")) {
+    return <Navigate to="/" />;
   }
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState(null);
@@ -51,7 +55,6 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
         lastName: data.lastName,
         avatarUrl: imageUrl,
       });
-      setToken(token.data.token);
       localStorage.setItem("token", JSON.stringify(token.data.token));
       localStorage.removeItem("data");
       setIsLoading(false);
