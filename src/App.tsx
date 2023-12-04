@@ -39,10 +39,7 @@ function App() {
             )
           }
         />
-        <Route
-          path="/main"
-          element={!isLoading ? <Main token={token} /> : ""}
-        />
+        <Route path="/" element={!isLoading ? <Main token={token} /> : ""} />
       </Routes>
       {isLoading ? <Loading /> : ""}
     </div>
