@@ -1,4 +1,4 @@
-export type Inputs = {
+export type InputsType = {
   avatarUrl: string;
   login: string;
   password: string;
