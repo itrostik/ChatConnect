@@ -77,8 +77,8 @@ const Header = ({ user }: { user: User }) => {
                 key={user.id}
               >
                 <div className={styles["modal-user__image"]}>
-                  {user?.avatar ? (
-                    <img src={user.avatar} alt="user" />
+                  {user?.avatarUrl ? (
+                    <img src={user.avatarUrl} alt="user" />
                   ) : (
                     <svg
                       width="30"
@@ -109,8 +109,8 @@ const Header = ({ user }: { user: User }) => {
         <div className={styles["header__theme-img"]}></div>
       </div>
       <div className={styles["header__user"]}>
-        {user?.avatar ? (
-          <img src={user?.avatar} alt="" className={styles["image-user"]} />
+        {user?.avatarUrl ? (
+          <img src={user?.avatarUrl} alt="" className={styles["image-user"]} />
         ) : (
           <svg
             width="30"

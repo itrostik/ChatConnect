@@ -17,7 +17,7 @@ export type Auth = {
 
 export type User = {
   id: string;
-  avatar?: string;
+  avatarUrl?: string;
   firstName: string;
   lastName: string;
   login: string;

@@ -3,7 +3,7 @@ import { User } from "../../@types/types";
 import { jwtDecode } from "jwt-decode";
 
 const getToken = () => {
-  return `${window?.localStorage?.getItem("token")}`;
+  return window?.localStorage?.getItem("token");
 };
 
 const token: string | null = getToken();

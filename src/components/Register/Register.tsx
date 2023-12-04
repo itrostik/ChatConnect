@@ -150,7 +150,7 @@ export default function Register({ token, setToken, setIsLoading }: Auth) {
           <label className={styles["label"]}>
             <input
               type="text"
-              defaultValue={imageUrl}
+              value={imageUrl}
               {...register("avatarUrl", {
                 required: false,
               })}
