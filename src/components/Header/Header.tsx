@@ -76,7 +76,14 @@ const Header = ({ user }: { user: UserType }) => {
     if (dialog) {
       dispatch(choose(dialog));
     } else {
-      dispatch(choose("1"));
+      const newDialog = await axios.post<DialogType>(
+        "http://localhost:4444/api/dialogs",
+        {
+          user_id: user.id,
+          user2_id: userId,
+        },
+      );
+      dispatch(choose(newDialog.data));
     }
     reset();
   }
