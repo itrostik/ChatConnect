@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: calc(100vh - 250px);
   &__header{
     padding: 10px;
     border-radius: 5px;
@@ -25,6 +26,10 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
+    overflow-y: scroll;
+    &::-webkit-scrollbar{
+      width: 0;
+    }
     gap: 10px;
   }
   &__input-message{
@@ -44,7 +49,13 @@
 
 .message-user{
   align-self: flex-end;
+  background: var(--backgroundAccept);
+  padding: 20px;
+  border-radius: 5px;
 }
 .message-mate{
   align-self: flex-start;
+  background: var(--backgroundAccept);
+  padding: 20px;
+  border-radius: 5px;
 }
