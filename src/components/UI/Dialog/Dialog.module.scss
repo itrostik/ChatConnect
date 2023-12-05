@@ -1,0 +1,23 @@
+.dialog{
+  display: flex;
+  flex-direction: column;
+  &__header{
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #5e5e5e;
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+    &-name{
+      color: #FFFFFF;
+    }
+    &-time{
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
