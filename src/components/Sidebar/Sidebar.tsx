@@ -20,7 +20,6 @@ export default function Sidebar({ user }: { user: UserType }) {
       collection(db, "dialogs"),
       or(where("user_id", "==", user.id), where("user2_id", "==", user.id)),
     );
-
     const unsub = onSnapshot(q, (querySnapshot) => {
       const dialogs = [];
       querySnapshot.forEach(async (doc) => {
@@ -30,10 +29,11 @@ export default function Sidebar({ user }: { user: UserType }) {
         const mate = await axios.get<UserType>(
           `http://localhost:4444/api/users/${mateId}`,
         );
-        dialogs.push({ ...dialog, id: doc.id, mate: mate.data });
+        if (mate.data) dialogs.push({ ...dialog, id: doc.id, mate: mate.data });
+        else dialogs.push({ ...dialog, id: doc.id });
+        setDialogs(dialogs);
       });
     });
-    setDialogs(dialogs);
     return () => {
       unsub();
     };
@@ -43,7 +43,6 @@ export default function Sidebar({ user }: { user: UserType }) {
     return messages[messages.length - 1];
   }
 
-  console.log(dialogs);
   return (
     <div className={styles["sidebar"]}>
       {dialogs.map((dialog) => (
