@@ -30,14 +30,15 @@ export default function Dialog({
   }, [dialog]);
 
   async function sendMessage() {
-    await axios.post("http://localhost:4444/api/messages", {
-      dialog_id: dialog.id,
-      sender_id: user.id,
-      messageText: inputRef.current.value,
-    });
-    inputRef.current.value = "";
+    if (inputRef.current.value.trim().length > 0) {
+      await axios.post("http://localhost:4444/api/messages", {
+        dialog_id: dialog.id,
+        sender_id: user.id,
+        messageText: inputRef.current.value,
+      });
+      inputRef.current.value = "";
+    }
   }
-
   function writeMessage(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter") {
       sendMessage();
