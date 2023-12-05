@@ -1,5 +1,5 @@
 import styles from "./Dialog.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { UserType } from "../../../../@types/userType.ts";
 import { DialogType } from "../../../../@types/dialogType.ts";
@@ -12,8 +12,8 @@ export default function Dialog({
   user: UserType;
 }) {
   const [mate, setMate] = useState<UserType>(null);
+  const inputRef = useRef(null);
   useEffect(() => {
-    console.log(52);
     const getMate = async () => {
       const mateId =
         dialog.user2_id !== user.id ? dialog.user2_id : dialog.user_id;
@@ -25,20 +25,63 @@ export default function Dialog({
     getMate();
   }, [dialog]);
 
+  async function sendMessage() {
+    const response = await axios.post("http://localhost:4444/api/messages", {
+      dialog_id: dialog.id,
+      sender_id: user.id,
+      messageText: inputRef.current.value,
+    });
+    console.log(response.data);
+  }
+
   return (
     <div className={styles["dialog"]}>
       {mate ? (
-        <div className={styles["dialog__header"]}>
-          <div className={styles["dialog__header-image"]}>
-            <img src={mate.avatarUrl} alt="avatar" />
-          </div>
-          <div className={styles["dialog__header-info"]}>
-            <div className={styles["dialog__header-name"]}>{mate.username}</div>
-            <div className={styles["dialog__header-time"]}>
-              был в сети 5 минут назад
+        <>
+          <div className={styles["dialog__header"]}>
+            <div className={styles["dialog__header-image"]}>
+              <img src={mate.avatarUrl} alt="avatar" />
+            </div>
+            <div className={styles["dialog__header-info"]}>
+              <div className={styles["dialog__header-name"]}>
+                {mate.username}
+              </div>
+              <div className={styles["dialog__header-time"]}>
+                был в сети 5 минут назад
+              </div>
             </div>
           </div>
-        </div>
+          <div className={styles["dialog__messages"]}>
+            {dialog.messages.map((message) => {
+              if (message.sender_id === user.id) {
+                return (
+                  <div className={styles["message-user"]}>
+                    {message.messageText}
+                  </div>
+                );
+              } else {
+                return (
+                  <div className={styles["message-mate"]}>
+                    {message.messageText}
+                  </div>
+                );
+              }
+            })}
+          </div>
+          <div className={styles["dialog__input-message"]}>
+            <input
+              type="text"
+              placeholder={"Введите сообщение"}
+              ref={inputRef}
+            />
+            <div
+              className={styles["dialog__input-send"]}
+              onClick={() => sendMessage()}
+            >
+              <img src="/img/message.svg" alt="" width={30} />
+            </div>
+          </div>
+        </>
       ) : (
         ""
       )}
