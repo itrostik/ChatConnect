@@ -3,7 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { UserType } from "../../../../@types/userType.ts";
 import { DialogType } from "../../../../@types/dialogType.ts";
-
+import db from "../../../../utils/database.ts";
+import { doc, onSnapshot } from "firebase/firestore";
+import { useDispatch } from "react-redux";
+import { choose } from "../../../../redux/slices/dialogSlice.ts";
 export default function Dialog({
   dialog,
   user,
@@ -13,6 +16,7 @@ export default function Dialog({
 }) {
   const [mate, setMate] = useState<UserType>(null);
   const inputRef = useRef(null);
+  const dispatch = useDispatch();
   useEffect(() => {
     const getMate = async () => {
       const mateId =
@@ -26,13 +30,22 @@ export default function Dialog({
   }, [dialog]);
 
   async function sendMessage() {
-    const response = await axios.post("http://localhost:4444/api/messages", {
+    await axios.post("http://localhost:4444/api/messages", {
       dialog_id: dialog.id,
       sender_id: user.id,
       messageText: inputRef.current.value,
     });
-    console.log(response.data);
+    inputRef.current.value = "";
   }
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "dialogs", dialog.id), (doc) => {
+      dispatch(choose({ ...doc.data(), id: doc.id }));
+    });
+    return () => {
+      unsub();
+    };
+  }, []);
 
   return (
     <div className={styles["dialog"]}>
@@ -55,13 +68,13 @@ export default function Dialog({
             {dialog.messages.map((message) => {
               if (message.sender_id === user.id) {
                 return (
-                  <div className={styles["message-user"]}>
+                  <div key={message.id} className={styles["message-user"]}>
                     {message.messageText}
                   </div>
                 );
               } else {
                 return (
-                  <div className={styles["message-mate"]}>
+                  <div key={message.id} className={styles["message-mate"]}>
                     {message.messageText}
                   </div>
                 );
