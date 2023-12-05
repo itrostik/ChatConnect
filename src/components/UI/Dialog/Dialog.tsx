@@ -1,5 +1,5 @@
 import styles from "./Dialog.module.scss";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { UserType } from "../../../../@types/userType.ts";
 import { DialogType } from "../../../../@types/dialogType.ts";
@@ -36,6 +36,12 @@ export default function Dialog({
       messageText: inputRef.current.value,
     });
     inputRef.current.value = "";
+  }
+
+  function writeMessage(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
   }
 
   useEffect(() => {
@@ -86,6 +92,7 @@ export default function Dialog({
               type="text"
               placeholder={"Введите сообщение"}
               ref={inputRef}
+              onKeyDown={(event) => writeMessage(event)}
             />
             <div
               className={styles["dialog__input-send"]}
