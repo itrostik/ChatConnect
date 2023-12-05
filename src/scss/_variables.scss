@@ -2,10 +2,12 @@
   --background: #fff;
   --color: #000;
   --backgroundTheme: url("public/img/sun.svg") 0 0 / cover no-repeat;
+  --backgroundAccept: #5e5e5e;
 }
 
 :root[data-theme='dark'] {
   --background: #000;
   --color: #fff;
   --backgroundTheme: url("public/img/moon.svg") 0 0 / cover no-repeat;
+  --backgroundAccept: #5e5e5e;
 }
