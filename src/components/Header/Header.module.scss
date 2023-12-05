@@ -21,19 +21,20 @@
     flex: 1 1 auto;
     position: relative;
     label{
-      background: var(--color);
+      background: var(--backgroundAccept);
       border-radius: 5px;
       padding: 10px;
       max-width: 500px;
       display: flex;
       align-items: center;
       gap: 10px;
+      color: #FFFFFF;
       svg{
         width: 20px;
         height: 20px;
       }
       svg path{
-        fill: var(--background)
+        fill: #FFFFFF;
       }
       div{
         display: flex;
@@ -44,11 +45,11 @@
     input{
       width: 100%;
       font-size: 14px;
-      color: var(--background);
+      color: #FFFFFF;
     }
 
     input::placeholder{
-      color: rgba(94, 94, 94, 0.5);
+      color: rgba(255, 255, 255, 0.5);
     }
     &-modal{
       border-radius: 5px;
@@ -66,7 +67,7 @@
       width: 100%;
       max-width: 500px;
       max-height: 100px;
-      background: var(--color);
+      background: var(--backgroundAccept);
     }
   }
 }
@@ -83,17 +84,14 @@
 
 .header__modal-user{
   cursor: pointer;
-  color: var(--background);
+  color: #FFFFFF;
   display: flex;
   gap: 10px;
   align-items: center;
   padding: 10px;
   border-radius: 5px;
-  //&:not(:last-child) {
-  //  border-bottom: 1px solid var(--background);
-  //}
   &:hover{
-    background: #E9E9E9;
+    background: #797979;
   }
 }
 
@@ -103,11 +101,6 @@
   border-radius: 50%;
 }
 
-.image-user{
-  path{
-    fill: var(--background)
-  }
-}
 
 .header__user{
   cursor: pointer;
