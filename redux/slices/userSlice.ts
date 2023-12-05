@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { User } from "../../@types/userType.ts";
+import { UserType } from "../../@types/userType.ts";
 import { jwtDecode } from "jwt-decode";
 
 const getToken = () => {
@@ -8,7 +8,7 @@ const getToken = () => {
 
 const token: string | null = getToken();
 
-let initialState: User | null = null;
+let initialState: UserType | null = null;
 
 if (token) {
   initialState = jwtDecode(getToken());
