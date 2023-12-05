@@ -7,6 +7,8 @@ import db from "../../../../utils/database.ts";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { choose } from "../../../../redux/slices/dialogSlice.ts";
+import ContentLoader from "react-content-loader";
+import { getDate } from "../../../../utils/date.ts";
 export default function Dialog({
   dialog,
   user,
@@ -17,7 +19,9 @@ export default function Dialog({
   const [mate, setMate] = useState<UserType>(null);
   const inputRef = useRef(null);
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
+    setIsLoading(true);
     const getMate = async () => {
       const mateId =
         dialog.user2_id !== user.id ? dialog.user2_id : dialog.user_id;
@@ -25,10 +29,10 @@ export default function Dialog({
         `http://localhost:4444/api/users/${mateId}`,
       );
       setMate(mate.data);
+      setIsLoading(false);
     };
     getMate();
   }, [dialog]);
-
   async function sendMessage() {
     if (inputRef.current.value.trim().length > 0) {
       await axios.post("http://localhost:4444/api/messages", {
@@ -56,7 +60,7 @@ export default function Dialog({
 
   return (
     <div className={styles["dialog"]}>
-      {mate ? (
+      {!isLoading && mate ? (
         <>
           <div className={styles["dialog__header"]}>
             <div className={styles["dialog__header-image"]}>
@@ -76,13 +80,23 @@ export default function Dialog({
               if (message.sender_id === user.id) {
                 return (
                   <div key={message.id} className={styles["message-user"]}>
-                    {message.messageText}
+                    <div className={styles["message-user__text"]}>
+                      {message.messageText}
+                    </div>
+                    <div className={styles["message-user__time"]}>
+                      {getDate(message.created)}
+                    </div>
                   </div>
                 );
               } else {
                 return (
                   <div key={message.id} className={styles["message-mate"]}>
-                    {message.messageText}
+                    <div className={styles["message-mate__text"]}>
+                      {message.messageText}
+                    </div>
+                    <div className={styles["message-user__time"]}>
+                      {getDate(message.created)}
+                    </div>
                   </div>
                 );
               }
@@ -104,7 +118,16 @@ export default function Dialog({
           </div>
         </>
       ) : (
-        ""
+        <ContentLoader
+          speed={2}
+          max-width={1200}
+          height={55}
+          viewBox="0 0 1200 55"
+          backgroundColor="#5e5e5e"
+          foregroundColor="#5e5e5e"
+        >
+          <rect x="0" y="0" rx="4" ry="4" width="100%" height="55" />
+        </ContentLoader>
       )}
     </div>
   );
