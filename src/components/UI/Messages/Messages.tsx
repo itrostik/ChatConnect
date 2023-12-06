@@ -26,7 +26,12 @@ export default function Messages({
         messageText: inputRef.current.value,
       });
       inputRef.current.value = "";
-    } else if (inputRef.current.value.trim().length > 0 && isUpdate) {
+    } else if (
+      inputRef.current.value.trim().length > 0 &&
+      isUpdate &&
+      activeMessage.messageText !== inputRef.current.value.trim()
+    ) {
+      console.log(activeMessage.messageText === inputRef.current.value.trim());
       await axios.put("http://localhost:4444/api/messages", {
         dialog_id: dialog.id,
         sender_id: user.id,
@@ -35,6 +40,8 @@ export default function Messages({
       });
       inputRef.current.value = "";
     }
+    inputRef.current.value = "";
+    setIsUpdate(false);
   }
 
   useEffect(() => {
@@ -102,6 +109,14 @@ export default function Messages({
                 <div className={styles["message-user__time"]}>
                   {getDate(message.created)}
                 </div>
+                {message.updated ? (
+                  <div className={styles["message-user__edited"]}>
+                    {" "}
+                    изменено{" "}
+                  </div>
+                ) : (
+                  ""
+                )}
                 {activeMessage?.id === message.id && openModal ? (
                   <div className={styles["message-user__modal"]}>
                     <div
