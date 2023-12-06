@@ -1,17 +1,17 @@
 export const themes = [
   {
     key: "light",
-    value: "Светлая",
+    value: "Светлая тема",
     imgUrl: "/img/sun.svg",
   },
   {
     key: "dark",
-    value: "Темная",
+    value: "Темная тема",
     imgUrl: "/img/moon.svg",
   },
   {
     key: "christmas",
-    value: "Новогодняя",
+    value: "Новогодняя тема",
     imgUrl: "/img/snowlake.svg",
   },
 ];

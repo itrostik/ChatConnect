@@ -109,7 +109,18 @@ const Header = ({ user }: { user: UserType }) => {
 
   return (
     <header className={styles["header"]}>
-      <div className={styles["header__logo"]}>ChatConnect</div>
+      <div className={styles["header__logo"]}>
+        <span>ChatConnect</span>
+        {theme === "christmas" ? (
+          <img
+            src="/img/santa-hat.svg"
+            alt=""
+            className={styles["header__santa"]}
+          />
+        ) : (
+          ""
+        )}
+      </div>
       <div className={styles["header__search"]}>
         <label>
           <svg
@@ -183,18 +194,20 @@ const Header = ({ user }: { user: UserType }) => {
         <div className={styles["header__theme-img"]}></div>
         {openModalTheme ? (
           <div className={styles["header__theme-modal"]}>
-            {themes.map((theme) => (
-              <div
-                className={styles["header__theme-block"]}
-                key={theme.key}
-                onClick={(event) => changeTheme(event, theme.key)}
-              >
-                <img src={theme.imgUrl} alt="" />
-                <div className={styles["header__theme-value"]}>
-                  {theme.value}
-                </div>
-              </div>
-            ))}
+            {themes.map((themeItem) => {
+              if (themeItem.key !== theme) {
+                return (
+                  <div
+                    className={styles["header__theme-block"]}
+                    key={themeItem.key}
+                    onClick={(event) => changeTheme(event, themeItem.key)}
+                    title={themeItem.value}
+                  >
+                    <img src={themeItem.imgUrl} alt="" />
+                  </div>
+                );
+              }
+            })}
           </div>
         ) : (
           ""

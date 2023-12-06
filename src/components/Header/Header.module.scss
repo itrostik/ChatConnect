@@ -9,7 +9,9 @@
   &__logo{
     font-size: 22px;
     font-weight: 800;
-    color: var(--color)
+    color: var(--color);
+    position: relative;
+    padding: 0 0 0 20px;
   }
   &__theme-img{
     cursor: pointer;
@@ -50,7 +52,7 @@
     }
 
     input::placeholder{
-      color: rgba(255, 255, 255, 0.5);
+      color: var(--placeholder);
     }
     &-modal{
       border-radius: 5px;
@@ -92,7 +94,8 @@
   padding: 10px;
   border-radius: 5px;
   &:hover{
-    background: #797979;
+    background: var(--background);
+    color: var(--color)
   }
 }
 
@@ -123,25 +126,31 @@
 
 .header__theme-modal{
   border-radius: 5px;
-  background: var(--color);
+  background: var(--backgroundAccept);
+  color: var(--color);
   display: flex;
   flex-direction: column;
-  gap: 10px;
   position: absolute;
-  width: 200px;
-  left: -160px;
+  width: 50px;
   top: 35px;
+  left: -10px;
   padding: 5px;
 }
 .header__theme-block{
-  padding: 10px;
+  padding: 5px;
   border-radius: 5px;
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--background);
+  color: var(--color);
   cursor: pointer;
   &:hover{
-    background: var(--backgroundAccept);
+    background: var(--background);
   }
+}
+
+.header__santa {
+  position: absolute;
+  top: -13px;
+  left: -3px;
 }

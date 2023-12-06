@@ -18,6 +18,9 @@
     input {
       width: 100%;
     }
+    input::placeholder{
+      color: var(--placeholder)
+    }
   }
   &__input-send{
     cursor: pointer;

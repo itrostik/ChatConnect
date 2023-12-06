@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #5e5e5e;
+    background: var(--backgroundAccept);
     img {
       width: 30px;
       height: 30px;
@@ -21,7 +21,7 @@
       color: #FFFFFF;
     }
     &-time{
-      color: rgba(255, 255, 255, 0.5);
+      color: var(--placeholder);
     }
   }
 }

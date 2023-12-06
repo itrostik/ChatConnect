@@ -1,6 +1,8 @@
 :root[data-theme='light'] {
   --background: #fff;
   --color: #000;
+  --borderColor: #000;
+  --placeholder: rgba(255, 255, 255, 0.3);
   --backgroundTheme: url("public/img/sun.svg") 0 0 / cover no-repeat;
   --backgroundAccept: #5e5e5e;
 }
@@ -8,6 +10,8 @@
 :root[data-theme='dark'] {
   --background: #000;
   --color: #fff;
+  --borderColor: #fff;
+  --placeholder: rgba(255, 255, 255, 0.3);
   --backgroundTheme: url("public/img/moon.svg") 0 0 / cover no-repeat;
   --backgroundAccept: #5e5e5e;
 }
@@ -15,7 +19,8 @@
 :root[data-theme='christmas'] {
   --background: #00B4DB;
   --color: #fff;
-  --backgroundAccept: #E9E9E9;
+  --borderColor: #00D1FF;
+  --backgroundAccept: #00a2c4;
   --placeholder: rgba(255, 255, 255, 0.3);
   --backgroundTheme: url("public/img/snowlake.svg") 0 0 / cover no-repeat;
 }
