@@ -1,5 +1,5 @@
 import styles from "./Dialog.module.scss";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { UserType } from "../../../../@types/userType.ts";
 import { DialogType } from "../../../../@types/dialogType.ts";
@@ -8,7 +8,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { choose } from "../../../../redux/slices/dialogSlice.ts";
 import ContentLoader from "react-content-loader";
-import { getDate } from "../../../../utils/date.ts";
+import Messages from "../Messages/Messages.tsx";
 export default function Dialog({
   dialog,
   user,
@@ -17,9 +17,20 @@ export default function Dialog({
   user: UserType;
 }) {
   const [mate, setMate] = useState<UserType>(null);
-  const inputRef = useRef(null);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "dialogs", dialog.id), (doc) => {
+      console.log(doc.data());
+      dispatch(choose({ ...doc.data(), id: doc.id }));
+    });
+
+    return () => {
+      unsub();
+    };
+  }, []);
+
   useEffect(() => {
     setIsLoading(true);
     const getMate = async () => {
@@ -32,31 +43,7 @@ export default function Dialog({
       setIsLoading(false);
     };
     getMate();
-  }, [dialog]);
-  async function sendMessage() {
-    if (inputRef.current.value.trim().length > 0) {
-      await axios.post("http://localhost:4444/api/messages", {
-        dialog_id: dialog.id,
-        sender_id: user.id,
-        messageText: inputRef.current.value,
-      });
-      inputRef.current.value = "";
-    }
-  }
-  function writeMessage(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === "Enter") {
-      sendMessage();
-    }
-  }
-
-  useEffect(() => {
-    const unsub = onSnapshot(doc(db, "dialogs", dialog.id), (doc) => {
-      dispatch(choose({ ...doc.data(), id: doc.id }));
-    });
-    return () => {
-      unsub();
-    };
-  }, []);
+  }, [dialog.id]);
 
   return (
     <div className={styles["dialog"]}>
@@ -75,47 +62,7 @@ export default function Dialog({
               </div>
             </div>
           </div>
-          <div className={styles["dialog__messages"]}>
-            {dialog.messages.map((message) => {
-              if (message.sender_id === user.id) {
-                return (
-                  <div key={message.id} className={styles["message-user"]}>
-                    <div className={styles["message-user__text"]}>
-                      {message.messageText}
-                    </div>
-                    <div className={styles["message-user__time"]}>
-                      {getDate(message.created)}
-                    </div>
-                  </div>
-                );
-              } else {
-                return (
-                  <div key={message.id} className={styles["message-mate"]}>
-                    <div className={styles["message-mate__text"]}>
-                      {message.messageText}
-                    </div>
-                    <div className={styles["message-user__time"]}>
-                      {getDate(message.created)}
-                    </div>
-                  </div>
-                );
-              }
-            })}
-          </div>
-          <div className={styles["dialog__input-message"]}>
-            <input
-              type="text"
-              placeholder={"Введите сообщение"}
-              ref={inputRef}
-              onKeyDown={(event) => writeMessage(event)}
-            />
-            <div
-              className={styles["dialog__input-send"]}
-              onClick={() => sendMessage()}
-            >
-              <img src="/img/message.svg" alt="" width={30} />
-            </div>
-          </div>
+          <Messages user={user} dialog={dialog} />
         </>
       ) : (
         <ContentLoader
