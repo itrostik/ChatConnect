@@ -34,6 +34,38 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 5px;
+  position: relative;
+  &__edit, &__delete{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 5px;
+    &:hover{
+      background: var(--background);
+      color: var(--color);
+      path{
+        fill: var(--backgroundAccept);
+      }
+    }
+    path{
+      fill: var(--background);
+    }
+  }
+  &__edit{
+    svg{
+      width: 30px;
+      height: 25px;
+
+    }
+  }
+  &__delete{
+    svg{
+      width: 30px;
+      height: 30px;
+    }
+  }
   &__text{
     background: #00b6a3;
     padding: 10px;
@@ -42,6 +74,18 @@
   &__time{
     font-size: 12px;
     color: var(--backgroundAccept)
+  }
+  &__modal{
+    border-radius: 5px;
+    position: absolute;
+    background: var(--backgroundAccept);
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
+    bottom: -70px;
+    z-index: 3;
   }
 }
 .message-mate{
