@@ -3,4 +3,5 @@ export type MessageType = {
   id: string;
   messageText: string;
   sender_id: string;
+  updated: boolean;
 };
