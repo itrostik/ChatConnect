@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { DialogType } from "../../@types/dialogType.ts";
+import { MateType } from "../../@types/mateType.ts";
 
-const initialState: DialogType = {
+const initialState: DialogType & MateType = {
   id: "",
   messages: [],
   user2_id: "",
   user_id: "",
+  mate: null,
 };
 
 export const dialogSlice = createSlice({

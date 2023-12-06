@@ -9,11 +9,12 @@ import { useDispatch } from "react-redux";
 import { choose } from "../../../../redux/slices/dialogSlice.ts";
 import ContentLoader from "react-content-loader";
 import Messages from "../Messages/Messages.tsx";
+import { MateType } from "../../../../@types/mateType.ts";
 export default function Dialog({
   dialog,
   user,
 }: {
-  dialog: DialogType;
+  dialog: DialogType & MateType;
   user: UserType;
 }) {
   const [mate, setMate] = useState<UserType>(null);
@@ -22,27 +23,29 @@ export default function Dialog({
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "dialogs", dialog.id), (doc) => {
-      console.log(doc.data());
-      dispatch(choose({ ...doc.data(), id: doc.id }));
+      dispatch(choose({ ...doc.data(), id: doc.id, mate: dialog.mate }));
     });
-
     return () => {
       unsub();
     };
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
-    const getMate = async () => {
-      const mateId =
-        dialog.user2_id !== user.id ? dialog.user2_id : dialog.user_id;
-      const mate = await axios.get<UserType>(
-        `http://localhost:4444/api/users/${mateId}`,
-      );
-      setMate(mate.data);
-      setIsLoading(false);
-    };
-    getMate();
+    if (!dialog.mate) {
+      setIsLoading(true);
+      const getMate = async () => {
+        const mateId =
+          dialog.user2_id !== user.id ? dialog.user2_id : dialog.user_id;
+        const mate = await axios.get<UserType>(
+          `http://localhost:4444/api/users/${mateId}`,
+        );
+        setMate(mate.data);
+        setIsLoading(false);
+      };
+      getMate();
+    } else {
+      setMate(dialog.mate);
+    }
   }, [dialog.id]);
 
   return (
