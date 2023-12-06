@@ -125,7 +125,10 @@ export default function Register({
   return (
     <div className={styles["registration"]}>
       <>
-        <h1 className={styles["registration__name"]}>Регистрация</h1>
+        <h1 className={styles["registration__name"]}>
+          <span>Регистрация</span>
+          <img src="/img/santa.svg" alt="" />
+        </h1>
         <div className={styles["input__wrapper"]}>
           <span className={styles["input__head"]}>
             Загрузите файл c компьютера
@@ -176,111 +179,146 @@ export default function Register({
             ) : (
               ""
             )}
+            <img
+              src="/img/santa-hat.svg"
+              alt=""
+              className={styles["santa-hat"]}
+            />
           </label>
-          <input
-            type="text"
-            {...register("firstName", {
-              required: "Поле не может быть пустым",
-              minLength: {
-                value: 2,
-                message: "Имя должно быть от 2 до 50 символов",
-              },
-              maxLength: { value: 50, message: "Слишком много символов" },
-            })}
-            placeholder="Имя"
-            className={
-              !Object.keys(errors).includes("firstName")
-                ? styles["registration__input"]
-                : styles["error__input"]
-            }
-          />
-
+          <label htmlFor="">
+            <input
+              type="text"
+              {...register("firstName", {
+                required: "Поле не может быть пустым",
+                minLength: {
+                  value: 2,
+                  message: "Имя должно быть от 2 до 50 символов",
+                },
+                maxLength: { value: 50, message: "Слишком много символов" },
+              })}
+              placeholder="Имя"
+              className={
+                !Object.keys(errors).includes("firstName")
+                  ? styles["registration__input"]
+                  : styles["error__input"]
+              }
+            />
+            <img
+              src="/img/santa-hat.svg"
+              alt=""
+              className={styles["santa-hat"]}
+            />
+          </label>
           {errors.firstName && (
             <p className={styles["error__text"]}>{errors.firstName.message}</p>
           )}
-
-          <input
-            type="text"
-            {...register("lastName", {
-              required: "Поле не может быть пустым",
-              minLength: {
-                value: 2,
-                message: "Фамилия должна быть от 2 до 50 символов",
-              },
-              maxLength: { value: 50, message: "Слишком много символов" },
-            })}
-            placeholder="Фамилия"
-            className={
-              !Object.keys(errors).includes("lastName")
-                ? styles["registration__input"]
-                : styles["error__input"]
-            }
-          />
+          <label htmlFor="">
+            <input
+              type="text"
+              {...register("lastName", {
+                required: "Поле не может быть пустым",
+                minLength: {
+                  value: 2,
+                  message: "Фамилия должна быть от 2 до 50 символов",
+                },
+                maxLength: { value: 50, message: "Слишком много символов" },
+              })}
+              placeholder="Фамилия"
+              className={
+                !Object.keys(errors).includes("lastName")
+                  ? styles["registration__input"]
+                  : styles["error__input"]
+              }
+            />
+            <img
+              src="/img/santa-hat.svg"
+              alt=""
+              className={styles["santa-hat"]}
+            />
+          </label>
           {errors.lastName && (
             <p className={styles["error__text"]}>{errors.lastName.message}</p>
           )}
-
-          <input
-            type="text"
-            {...register("username", {
-              required: "Поле не может быть пустым",
-              minLength: {
-                value: 2,
-                message: "Никнейм должен быть от 2 до 50 символов",
-              },
-              maxLength: { value: 50, message: "Слишком много символов" },
-            })}
-            placeholder="Никнейм"
-            className={
-              !Object.keys(errors).includes("username")
-                ? styles["registration__input"]
-                : styles["error__input"]
-            }
-          />
+          <label htmlFor="">
+            <input
+              type="text"
+              {...register("username", {
+                required: "Поле не может быть пустым",
+                minLength: {
+                  value: 2,
+                  message: "Никнейм должен быть от 2 до 50 символов",
+                },
+                maxLength: { value: 50, message: "Слишком много символов" },
+              })}
+              placeholder="Никнейм"
+              className={
+                !Object.keys(errors).includes("username")
+                  ? styles["registration__input"]
+                  : styles["error__input"]
+              }
+            />
+            <img
+              src="/img/santa-hat.svg"
+              alt=""
+              className={styles["santa-hat"]}
+            />
+          </label>
 
           {errors.username && (
             <p className={styles["error__text"]}>{errors.username.message}</p>
           )}
+          <label htmlFor="">
+            <input
+              type="text"
+              {...register("login", {
+                required: "Поле не может быть пустым",
+                minLength: {
+                  value: 4,
+                  message: "Логин должен быть от 4 до 30 символов",
+                },
+                maxLength: { value: 30, message: "Слишком много символов" },
+              })}
+              placeholder="Логин"
+              className={
+                !Object.keys(errors).includes("login")
+                  ? styles["registration__input"]
+                  : styles["error__input"]
+              }
+            />
+            <img
+              src="/img/santa-hat.svg"
+              alt=""
+              className={styles["santa-hat"]}
+            />
+          </label>
 
-          <input
-            type="text"
-            {...register("login", {
-              required: "Поле не может быть пустым",
-              minLength: {
-                value: 4,
-                message: "Логин должен быть от 4 до 30 символов",
-              },
-              maxLength: { value: 30, message: "Слишком много символов" },
-            })}
-            placeholder="Логин"
-            className={
-              !Object.keys(errors).includes("login")
-                ? styles["registration__input"]
-                : styles["error__input"]
-            }
-          />
           {errors.login && (
             <p className={styles["error__text"]}>{errors.login.message}</p>
           )}
-
-          <input
-            type="password"
-            {...register("password", {
-              required: "Поле не может быть пустым",
-              minLength: {
-                value: 4,
-                message: "Пароль должен быть от 4 до 30 символов",
-              },
-              maxLength: { value: 30, message: "Слишком много символов" },
-            })}
-            placeholder="Пароль"
-            className={
-              !Object.keys(errors).includes("password")
-                ? styles["registration__input"]
-                : styles["error__input"]
-            }
-          />
-
+          <label htmlFor="">
+            <input
+              type="password"
+              {...register("password", {
+                required: "Поле не может быть пустым",
+                minLength: {
+                  value: 4,
+                  message: "Пароль должен быть от 4 до 30 символов",
+                },
+                maxLength: { value: 30, message: "Слишком много символов" },
+              })}
+              placeholder="Пароль"
+              className={
+                !Object.keys(errors).includes("password")
+                  ? styles["registration__input"]
+                  : styles["error__input"]
+              }
+            />
+            <img
+              src="/img/santa-hat.svg"
+              alt=""
+              className={styles["santa-hat"]}
+            />
+          </label>
           {errors.password && (
             <p className={styles["error__text"]}>{errors.password.message}</p>
           )}
@@ -288,7 +326,12 @@ export default function Register({
           {error ? <p className={styles["error__text"]}>{error}</p> : ""}
 
           <button type="submit" className={styles["registration__button"]}>
-            Отправить
+            <span>Зарегистрироваться</span>
+            {theme === "christmas" ? (
+              <img src="/img/christmas-tree.svg" alt="" />
+            ) : (
+              ""
+            )}
           </button>
           <div className={styles["registration__text"]}>
             Уже есть аккаунт?{" "}

@@ -5,6 +5,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-image: url('/public/img/snow.svg');
+  background-size: 100px 100px; /*только для этого примера*/
+  animation: moveSlideshow 5s linear infinite forwards;
 }
 
 .loading__logo{
@@ -14,7 +17,13 @@
 }
 
 .loading__text{
-  color: #A4A4A4;
+  color: #e7e7e7;
   font-size: 20px;
   font-weight: 800;
+}
+
+@keyframes moveSlideshow {
+  100% {
+    background-position: 1000px 1000px;
+  }
 }

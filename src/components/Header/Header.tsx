@@ -10,6 +10,7 @@ import { change } from "../../../redux/slices/themeSlice.ts";
 import { useNavigate } from "react-router-dom";
 import { choose } from "../../../redux/slices/dialogSlice.ts";
 import { DialogType } from "../../../@types/dialogType.ts";
+import { themes } from "../../../constants/theme.ts";
 
 const Header = ({ user }: { user: UserType }) => {
   const theme = useSelector((state: RootState) => state.theme);
@@ -17,16 +18,18 @@ const Header = ({ user }: { user: UserType }) => {
   const [users, setUsers] = useState<UserType[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const [openModalTheme, setOpenModalTheme] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     document.addEventListener("click", () => {
       setOpenModal(false);
+      setOpenModalTheme(false);
     });
     return () => {
       document.removeEventListener("click", () => {
         setOpenModal(false);
+        setOpenModalTheme(false);
       });
     };
   }, []);
@@ -93,9 +96,15 @@ const Header = ({ user }: { user: UserType }) => {
     setOpenModal(false);
   }
 
-  function changeTheme() {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    dispatch(change(nextTheme));
+  function changeTheme(
+    event: React.MouseEvent<HTMLDivElement>,
+    themeName: string,
+  ) {
+    event.stopPropagation();
+    setOpenModalTheme(!openModalTheme);
+    if (themeName) {
+      dispatch(change(themeName));
+    }
   }
 
   return (
@@ -167,8 +176,29 @@ const Header = ({ user }: { user: UserType }) => {
           ""
         )}
       </div>
-      <div className={styles["header__theme"]} onClick={() => changeTheme()}>
+      <div
+        className={styles["header__theme"]}
+        onClick={(event) => changeTheme(event, "")}
+      >
         <div className={styles["header__theme-img"]}></div>
+        {openModalTheme ? (
+          <div className={styles["header__theme-modal"]}>
+            {themes.map((theme) => (
+              <div
+                className={styles["header__theme-block"]}
+                key={theme.key}
+                onClick={(event) => changeTheme(event, theme.key)}
+              >
+                <img src={theme.imgUrl} alt="" />
+                <div className={styles["header__theme-value"]}>
+                  {theme.value}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <div className={styles["header__user"]} onClick={() => console.log()}>
         {user?.avatarUrl ? (

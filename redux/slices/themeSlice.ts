@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const themes = {
   dark: "dark",
   light: "light",
+  christmas: "christmas",
 };
 
 const getTheme = () => {

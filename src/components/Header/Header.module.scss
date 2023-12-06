@@ -17,6 +17,7 @@
     height: 30px;
     background: var(--backgroundTheme);
   }
+
   &__search{
     flex: 1 1 auto;
     position: relative;
@@ -113,5 +114,34 @@
   height: 30px;
   svg path{
     fill: var(--color)
+  }
+}
+
+.header__theme{
+  position: relative;
+}
+
+.header__theme-modal{
+  border-radius: 5px;
+  background: var(--color);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: absolute;
+  width: 200px;
+  left: -160px;
+  top: 35px;
+  padding: 5px;
+}
+.header__theme-block{
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--background);
+  cursor: pointer;
+  &:hover{
+    background: var(--backgroundAccept);
   }
 }

@@ -11,3 +11,11 @@
   --backgroundTheme: url("public/img/moon.svg") 0 0 / cover no-repeat;
   --backgroundAccept: #5e5e5e;
 }
+
+:root[data-theme='christmas'] {
+  --background: #00B4DB;
+  --color: #fff;
+  --backgroundAccept: #E9E9E9;
+  --placeholder: rgba(255, 255, 255, 0.3);
+  --backgroundTheme: url("public/img/snowlake.svg") 0 0 / cover no-repeat;
+}
