@@ -1,17 +1,17 @@
 .main{
   padding: 0 15px;
-  height: 100vh;
+  //height: 100%;
 }
 
 .main__content{
   display: grid;
   gap: 15px;
   grid-template-columns: 1fr 2fr;
+  //height: 100%;
+  width: 100%;
   &-dialog{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: calc(100vh - 250px);
   }
 }
