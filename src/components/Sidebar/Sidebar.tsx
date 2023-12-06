@@ -33,7 +33,7 @@ export default function Sidebar({
       or(where("user_id", "==", user.id), where("user2_id", "==", user.id)),
     );
     const unsub = onSnapshot(q, (querySnapshot) => {
-      const dialogs = [];
+      let dialogs = [];
       const dialogSize = querySnapshot.docs.length;
       querySnapshot.docs.map(async (doc, index) => {
         const dialog = doc.data();
@@ -45,6 +45,14 @@ export default function Sidebar({
         if (mate.data) dialogs.push({ ...dialog, id: doc.id, mate: mate.data });
         else dialogs.push({ ...dialog, id: doc.id });
         if (index + 1 === dialogSize) {
+          dialogs = dialogs.sort((a, b) => {
+            if (a.messages.length > 0 && b.messages.length) {
+              return (
+                b.messages[b.messages.length - 1].created -
+                a.messages[a.messages.length - 1].created
+              );
+            }
+          });
           setDialogs(dialogs);
           setIsLoading(false);
           localStorage.setItem("dialogs", JSON.stringify(dialogs));
