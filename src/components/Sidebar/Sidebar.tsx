@@ -161,12 +161,16 @@ export default function Sidebar({
           backgroundColor="#d9d9d9"
           foregroundColor="#ededed"
         >
-          <rect x="0" y="0" rx="4" ry="4" width="500" height="40" />
-          <rect x="0" y="45" rx="4" ry="4" width="500" height="40" />
-          <rect x="0" y="90" rx="4" ry="4" width="500" height="40" />
-          <rect x="0" y="135" rx="4" ry="4" width="500" height="40" />
-          <rect x="0" y="180" rx="4" ry="4" width="500" height="40" />
-          <rect x="0" y="225" rx="4" ry="4" width="500" height="40" />
+          <circle cx="20" cy="20" r="20" />
+          <rect x="50" y="0" rx="4" ry="4" width="500" height="40" />
+          <circle cx="20" cy="65" r="20" />
+          <rect x="50" y="45" rx="4" ry="4" width="500" height="40" />
+          <circle cx="20" cy="110" r="20" />
+          <rect x="50" y="90" rx="4" ry="4" width="500" height="40" />
+          <circle cx="20" cy="155" r="20" />
+          <rect x="50" y="135" rx="4" ry="4" width="500" height="40" />
+          <circle cx="20" cy="200" r="20" />
+          <rect x="50" y="180" rx="4" ry="4" width="500" height="40" />
         </ContentLoader>
       )}
     </>
