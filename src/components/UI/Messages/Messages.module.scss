@@ -35,6 +35,16 @@
   align-items: flex-end;
   gap: 5px;
   position: relative;
+  svg {
+    position: absolute;
+    width: 11px;
+    height: 8px;
+    right: 0;
+    bottom: 17px;
+    path{
+      fill: var(--backgroundMessageUser)
+    }
+  }
   &__edit, &__delete{
     display: flex;
     align-items: center;
@@ -67,7 +77,7 @@
     }
   }
   &__text{
-    background: #00b6a3;
+    background: var(--backgroundMessageUser);
     padding: 10px;
     border-radius: 5px;
   }
@@ -102,9 +112,20 @@
   flex-direction: column;
   gap: 5px;
   align-self: flex-start;
+  position: relative;
   &__text{
-    background: #7c00a9;
+    background: var(--backgroundMessageMate);
     padding: 10px;
     border-radius: 5px;
+  }
+  svg {
+    position: absolute;
+    width: 11px;
+    height: 7px;
+    bottom: 17px;
+    left: 0;
+    path{
+      fill: var(--backgroundMessageMate);
+    }
   }
 }

@@ -106,6 +106,15 @@ export default function Messages({
                 <div className={styles["message-user__text"]}>
                   {message.messageText}
                 </div>
+                <svg
+                  width="11"
+                  height="8"
+                  viewBox="0 0 11 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M4 0L0 4.8L11 8L4 0Z" fill="#00d3ff" />
+                </svg>
                 <div className={styles["message-user__time"]}>
                   {getDate(message.created)}
                 </div>
@@ -159,6 +168,15 @@ export default function Messages({
                 <div className={styles["message-mate__text"]}>
                   {message.messageText}
                 </div>
+                <svg
+                  width="11"
+                  height="8"
+                  viewBox="0 0 11 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M7 0L11 4.5L0 7.5L7 0Z" fill="#7C00A9" />
+                </svg>
                 <div className={styles["message-user__time"]}>
                   {getDate(message.created)}
                 </div>
