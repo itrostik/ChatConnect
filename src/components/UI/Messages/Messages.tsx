@@ -1,19 +1,18 @@
 import styles from "./Messages.module.scss";
 import { getDate } from "../../../../utils/date.ts";
-import { DialogType } from "../../../../@types/dialogType.ts";
 import { UserType } from "../../../../@types/userType.ts";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { MessageType } from "../../../../@types/messageType.ts";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store.ts";
 
 export default function Messages({
   user,
-  dialog,
   isScrolling,
   setIsScrolling,
 }: {
   user: UserType;
-  dialog: DialogType;
   isScrolling: boolean;
   setIsScrolling: React.Dispatch<boolean>;
 }) {
@@ -22,7 +21,9 @@ export default function Messages({
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [activeMessage, setActiveMessage] = useState<MessageType>(null);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const dialog = useSelector((state: RootState) => state.dialog);
   async function sendMessage() {
+    console.log("Запрос отправлен...");
     if (inputRef.current.value.trim().length > 0 && !isUpdate) {
       await axios.post("http://localhost:4444/api/messages", {
         dialog_id: dialog.id,
@@ -45,15 +46,15 @@ export default function Messages({
     }
     inputRef.current.value = "";
     setIsUpdate(false);
+    console.log("Запрос выполнен...");
   }
+  console.log("Перерисовка:", 60);
 
   useEffect(() => {
-    localStorage.setItem("messages", JSON.stringify(dialog.messages));
     document.addEventListener("click", () => {
       setOpenModal(false);
     });
     return () => {
-      localStorage.removeItem("messages");
       document.removeEventListener("click", () => {
         setOpenModal(false);
       });
@@ -62,6 +63,7 @@ export default function Messages({
   }, []);
 
   useEffect(() => {
+    console.log("use effect: ", dialog.messages);
     if (
       (scrollChat.current &&
         dialog.messages.length > 0 &&
@@ -78,7 +80,7 @@ export default function Messages({
       });
     }
     localStorage.setItem("messages", JSON.stringify(dialog.messages));
-  }, [dialog.messages.length]);
+  }, [dialog]);
   function chooseMessage(
     event: React.MouseEvent<HTMLDivElement>,
     message: MessageType,

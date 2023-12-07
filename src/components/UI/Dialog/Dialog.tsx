@@ -43,12 +43,13 @@ export default function Dialog({
         setIsLoading(false);
       };
       getMate();
+      localStorage.setItem("messages", JSON.stringify(dialog.messages));
     } else {
       setMate(dialog.mate);
       setIsScrolling(true);
+      localStorage.setItem("messages", JSON.stringify(dialog.messages));
     }
-  }, [dialog.id]);
-
+  }, [dialog]);
   return (
     <div className={styles["dialog"]}>
       {!isLoading && mate ? (
@@ -68,7 +69,6 @@ export default function Dialog({
           </div>
           <Messages
             user={user}
-            dialog={dialog}
             isScrolling={isScrolling}
             setIsScrolling={setIsScrolling}
           />
