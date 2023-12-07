@@ -46,7 +46,7 @@ export default function Sidebar({
         else dialogs.push({ ...dialog, id: doc.id });
         if (index + 1 === dialogSize) {
           dialogs = dialogs.sort((a, b) => {
-            if (a.messages.length > 0 && b.messages.length) {
+            if (a.messages.length > 0 && b.messages.length > 0) {
               return (
                 b.messages[b.messages.length - 1].created -
                 a.messages[a.messages.length - 1].created
