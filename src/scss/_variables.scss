@@ -5,6 +5,8 @@
   --placeholder: rgba(255, 255, 255, 0.3);
   --backgroundTheme: url("public/img/sun.svg") 0 0 / cover no-repeat;
   --backgroundAccept: #5e5e5e;
+  --backgroundMessageUser: #777777;
+  --backgroundMessageMate: #a2a2a2;
 }
 
 :root[data-theme='dark'] {
@@ -14,6 +16,8 @@
   --placeholder: rgba(255, 255, 255, 0.3);
   --backgroundTheme: url("public/img/moon.svg") 0 0 / cover no-repeat;
   --backgroundAccept: #5e5e5e;
+  --backgroundMessageUser: #6c6c6c;
+  --backgroundMessageMate: #2a2a2a;
 }
 
 :root[data-theme='christmas'] {
@@ -23,4 +27,6 @@
   --backgroundAccept: #00a2c4;
   --placeholder: rgba(255, 255, 255, 0.3);
   --backgroundTheme: url("public/img/snowlake.svg") 0 0 / cover no-repeat;
+  --backgroundMessageUser: #10d1f5;
+  --backgroundMessageMate: #00a2c4;
 }
