@@ -45,6 +45,7 @@ export default function Dialog({
       getMate();
     } else {
       setMate(dialog.mate);
+      setIsScrolling(true);
     }
   }, [dialog.id]);
 
