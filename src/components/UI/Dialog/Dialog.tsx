@@ -20,7 +20,7 @@ export default function Dialog({
   const [mate, setMate] = useState<UserType>(null);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const [isScrolling, setIsScrolling] = useState<boolean>(true);
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "dialogs", dialog.id), (doc) => {
       dispatch(choose({ ...doc.data(), id: doc.id, mate: dialog.mate }));
@@ -65,7 +65,12 @@ export default function Dialog({
               </div>
             </div>
           </div>
-          <Messages user={user} dialog={dialog} />
+          <Messages
+            user={user}
+            dialog={dialog}
+            isScrolling={isScrolling}
+            setIsScrolling={setIsScrolling}
+          />
         </>
       ) : (
         <ContentLoader

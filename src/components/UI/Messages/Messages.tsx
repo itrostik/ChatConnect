@@ -9,9 +9,13 @@ import { MessageType } from "../../../../@types/messageType.ts";
 export default function Messages({
   user,
   dialog,
+  isScrolling,
+  setIsScrolling,
 }: {
   user: UserType;
   dialog: DialogType;
+  isScrolling: boolean;
+  setIsScrolling: React.Dispatch<boolean>;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollChat = useRef<HTMLDivElement>(null);
@@ -31,7 +35,6 @@ export default function Messages({
       isUpdate &&
       activeMessage.messageText !== inputRef.current.value.trim()
     ) {
-      console.log(activeMessage.messageText === inputRef.current.value.trim());
       await axios.put("http://localhost:4444/api/messages", {
         dialog_id: dialog.id,
         sender_id: user.id,
@@ -45,24 +48,37 @@ export default function Messages({
   }
 
   useEffect(() => {
+    localStorage.setItem("messages", JSON.stringify(dialog.messages));
     document.addEventListener("click", () => {
       setOpenModal(false);
     });
     return () => {
+      localStorage.removeItem("messages");
       document.removeEventListener("click", () => {
         setOpenModal(false);
       });
+      setIsScrolling(true);
     };
   }, []);
 
   useEffect(() => {
-    if (scrollChat.current) {
+    if (
+      (scrollChat.current &&
+        dialog.messages.length > 0 &&
+        (dialog.messages[dialog.messages.length - 1].sender_id === user.id ||
+          scrollChat.current.scrollTop + scrollChat.current.clientHeight >=
+            scrollChat.current.scrollHeight - 100) &&
+        JSON.parse(localStorage.getItem("messages")).length <
+          dialog.messages.length) ||
+      isScrolling
+    ) {
+      setIsScrolling(false);
       scrollChat.current.scrollTo({
         top: scrollChat?.current.scrollHeight,
       });
     }
-  }, [scrollChat?.current?.scrollHeight]);
-
+    localStorage.setItem("messages", JSON.stringify(dialog.messages));
+  }, [dialog.messages.length]);
   function chooseMessage(
     event: React.MouseEvent<HTMLDivElement>,
     message: MessageType,
