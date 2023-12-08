@@ -18,6 +18,7 @@ export default function Messages({
   setIsScrolling: React.Dispatch<boolean>;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [inputValue, setInputValue] = useState<string>(null);
   const scrollChat = useRef<HTMLDivElement>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [activeMessage, setActiveMessage] = useState<MessageType>(null);
@@ -30,7 +31,7 @@ export default function Messages({
       await axios.post("http://localhost:4444/api/messages", {
         dialog_id: dialog.id,
         sender_id: user.id,
-        messageText: inputRef.current.value,
+        messageText: inputRef.current.value || inputValue,
         imageUrl,
       });
     } else if (
@@ -42,7 +43,7 @@ export default function Messages({
         dialog_id: dialog.id,
         sender_id: user.id,
         message_id: activeMessage.id,
-        messageText: inputRef.current.value,
+        messageText: inputRef.current.value || inputValue,
         imageUrl,
       });
     }
@@ -117,7 +118,12 @@ export default function Messages({
   }
 
   function editMessage(message: MessageType) {
-    inputRef.current.value = message.messageText;
+    if (message.imageUrl) {
+      setImageUrl(message.imageUrl);
+      setInputValue(message.messageText);
+    } else {
+      inputRef.current.value = message.messageText;
+    }
     setIsUpdate(true);
   }
 
@@ -273,12 +279,36 @@ export default function Messages({
             <div className={styles["dialog__input-window"]}>
               <div className={styles["dialog__input-image"]}>
                 <img src={imageUrl} alt="" />
+                <div className={styles["dialog__input-buttons"]}>
+                  <div className={styles["dialog__input-editImage"]}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      id="refresh"
+                    >
+                      <path d="M21 21a1 1 0 0 1-1-1V16H16a1 1 0 0 1 0-2h5a1 1 0 0 1 1 1v5A1 1 0 0 1 21 21zM8 10H3A1 1 0 0 1 2 9V4A1 1 0 0 1 4 4V8H8a1 1 0 0 1 0 2z"></path>
+                      <path d="M12 22a10 10 0 0 1-9.94-8.89 1 1 0 0 1 2-.22 8 8 0 0 0 15.5 1.78 1 1 0 1 1 1.88.67A10 10 0 0 1 12 22zM20.94 12a1 1 0 0 1-1-.89A8 8 0 0 0 4.46 9.33a1 1 0 1 1-1.88-.67 10 10 0 0 1 19.37 2.22 1 1 0 0 1-.88 1.1z"></path>
+                    </svg>
+                  </div>
+                  <div className={styles["dialog__input-close"]}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      id="close"
+                    >
+                      <path d="M15.71,8.29a1,1,0,0,0-1.42,0L12,10.59,9.71,8.29A1,1,0,0,0,8.29,9.71L10.59,12l-2.3,2.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l2.29,2.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L13.41,12l2.3-2.29A1,1,0,0,0,15.71,8.29Zm3.36-3.36A10,10,0,1,0,4.93,19.07,10,10,0,1,0,19.07,4.93ZM17.66,17.66A8,8,0,1,1,20,12,7.95,7.95,0,0,1,17.66,17.66Z"></path>
+                    </svg>
+                  </div>
+                </div>
               </div>
               <input
                 type="text"
                 placeholder={"Ваше сообщение"}
-                ref={inputRef}
+                value={inputValue}
                 onKeyDown={(event) => writeMessage(event)}
+                onInput={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  setInputValue(event.target.value)
+                }
                 className={styles["dialog__modal-input"]}
               />
               <div

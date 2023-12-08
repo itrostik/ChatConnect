@@ -1,15 +1,18 @@
-.dialog{
-  &__messages{
+.dialog {
+  &__messages {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
     flex: 1 1 auto;
-    &::-webkit-scrollbar{
+
+    &::-webkit-scrollbar {
       width: 0;
     }
+
     margin: 10px 0;
   }
-  &__input-message{
+
+  &__input-message {
     margin: 0 0 10px 0;
     padding: 10px;
     border-radius: 5px;
@@ -17,20 +20,23 @@
     align-items: center;
     width: 100%;
     background: var(--backgroundAccept);
+
     input {
       width: 100%;
       display: flex;
     }
-    input::placeholder{
+
+    input::placeholder {
       color: var(--placeholder)
     }
   }
-  &__input-send{
+
+  &__input-send {
     cursor: pointer;
   }
 }
 
-.message-user{
+.message-user {
   align-self: flex-end;
   display: flex;
   flex-direction: column;
@@ -39,48 +45,57 @@
   position: relative;
   max-width: 70%;
   margin: 10px 0;
+
   .svg-triangle {
     position: absolute;
     width: 11px;
     height: 8px;
     right: 0;
     bottom: 17px;
-    path{
+
+    path {
       fill: var(--backgroundMessageUser)
     }
   }
-  &__edit, &__delete{
+
+  &__edit, &__delete {
     display: flex;
     align-items: center;
     gap: 5px;
     cursor: pointer;
     border-radius: 5px;
     padding: 5px;
-    &:hover{
+
+    &:hover {
       background: var(--background);
       color: var(--color);
-      path{
+
+      path {
         fill: var(--backgroundAccept);
       }
     }
-    path{
+
+    path {
       fill: var(--background);
     }
   }
-  &__edit{
-    svg{
+
+  &__edit {
+    svg {
       width: 30px;
       height: 25px;
 
     }
   }
-  &__delete{
-    svg{
+
+  &__delete {
+    svg {
       width: 30px;
       height: 30px;
     }
   }
-  &__text{
+
+  &__text {
     background: var(--backgroundMessageUser);
     padding: 10px;
     border-radius: 5px;
@@ -89,12 +104,14 @@
     gap: 5px;
     align-items: flex-end;
   }
-  &__time{
+
+  &__time {
     font-size: 12px;
     color: var(--color);
     opacity: 0.3;
   }
-  &__modal{
+
+  &__modal {
     border-radius: 5px;
     background: var(--backgroundMessageUser);
     width: 200px;
@@ -104,7 +121,8 @@
     padding: 5px;
     z-index: 10;
   }
-  &__edited{
+
+  &__edited {
     position: absolute;
     font-size: 11px;
     color: var(--color);
@@ -113,7 +131,8 @@
     right: 33px;
   }
 }
-.message-mate{
+
+.message-mate {
   margin: 10px 0;
   display: flex;
   flex-direction: column;
@@ -121,7 +140,8 @@
   align-self: flex-start;
   position: relative;
   max-width: 70%;
-  &__text{
+
+  &__text {
     background: var(--backgroundMessageMate);
     padding: 10px;
     border-radius: 5px;
@@ -130,17 +150,20 @@
     gap: 5px;
     align-items: flex-start;
   }
+
   svg {
     position: absolute;
     width: 11px;
     height: 7px;
     bottom: 17px;
     left: 0;
-    path{
+
+    path {
       fill: var(--backgroundMessageMate);
     }
   }
-  &__edited{
+
+  &__edited {
     position: absolute;
     left: 33px;
     bottom: 1px;
@@ -150,20 +173,21 @@
   }
 }
 
-.dialog__input-addFile{
+.dialog__input-addFile {
   cursor: pointer;
   width: 30px;
   margin: 0 5px 0 0;
-  &:hover{
-    path{
+
+  &:hover {
+    path {
       fill: #FFFFFF;
     }
   }
-  path{
+
+  path {
     fill: var(--placeholder)
   }
 }
-
 
 
 .input__file {
@@ -176,14 +200,14 @@
   position: relative;
 }
 
-.input__file-button{
+.input__file-button {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
 }
 
-.dialog__input-modal{
+.dialog__input-modal {
   background: rgba(86, 86, 86, 0.4);
   position: absolute;
   top: 0;
@@ -195,7 +219,7 @@
   align-items: center;
 }
 
-.dialog__input-window{
+.dialog__input-window {
   position: relative;
   background: var(--background);
   width: 400px;
@@ -205,24 +229,32 @@
   padding: 5px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
-  img{
+
+  img {
     border-radius: 5px;
     max-height: 210px;
   }
 }
 
-.dialog__input-image{
+.dialog__input-image {
+  position: relative;
+  img:hover ~ .dialog__input-buttons {
+    display: flex;
+  }
+
   flex: 1 1 auto;
 }
 
-.dialog__modal-input{
+.dialog__modal-input {
   width: 100%;
   padding: 10px 40px 10px 10px;
   border: 1px solid var(--placeholder);
+  background: var(--backgroundAccept);
 }
 
-.dialog__modal-send{
+.dialog__modal-send {
   position: absolute;
   bottom: 10px;
   right: 10px;
@@ -231,7 +263,30 @@
 }
 
 .message-user-image, .message-mate-image {
-  img{
+
+  img {
     border-radius: 5px;
+
+  }
+}
+
+.dialog__input-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  &:hover{
+    display: flex;
+  }
+  div {
+    cursor: pointer;
+  }
+  svg {
+    width: 20px;
+    height: 20px;
+    align-items: center;
+    path {
+      fill: var(--color)
+    }
   }
 }
