@@ -4,4 +4,5 @@ export type MessageType = {
   messageText: string;
   sender_id: string;
   updated: boolean;
+  imageUrl: string | null;
 };
