@@ -28,7 +28,7 @@ export default function Dialog({
     return () => {
       unsub();
     };
-  }, []);
+  }, [dialog.id]);
 
   useEffect(() => {
     if (!dialog.mate) {
@@ -43,11 +43,9 @@ export default function Dialog({
         setIsLoading(false);
       };
       getMate();
-      localStorage.setItem("messages", JSON.stringify(dialog.messages));
     } else {
       setMate(dialog.mate);
       setIsScrolling(true);
-      localStorage.setItem("messages", JSON.stringify(dialog.messages));
     }
   }, [dialog]);
   return (

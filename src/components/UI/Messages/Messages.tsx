@@ -23,7 +23,6 @@ export default function Messages({
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const dialog = useSelector((state: RootState) => state.dialog);
   async function sendMessage() {
-    console.log("Запрос отправлен...");
     if (inputRef.current.value.trim().length > 0 && !isUpdate) {
       await axios.post("http://localhost:4444/api/messages", {
         dialog_id: dialog.id,
@@ -46,9 +45,7 @@ export default function Messages({
     }
     inputRef.current.value = "";
     setIsUpdate(false);
-    console.log("Запрос выполнен...");
   }
-  console.log("Перерисовка:", 60);
 
   useEffect(() => {
     document.addEventListener("click", () => {
@@ -63,7 +60,6 @@ export default function Messages({
   }, []);
 
   useEffect(() => {
-    console.log("use effect: ", dialog.messages);
     if (
       (scrollChat.current &&
         dialog.messages.length > 0 &&
@@ -80,7 +76,7 @@ export default function Messages({
       });
     }
     localStorage.setItem("messages", JSON.stringify(dialog.messages));
-  }, [dialog]);
+  }, [dialog.messages.length]);
   function chooseMessage(
     event: React.MouseEvent<HTMLDivElement>,
     message: MessageType,
