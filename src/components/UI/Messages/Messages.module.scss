@@ -286,7 +286,64 @@
     height: 20px;
     align-items: center;
     path {
-      fill: var(--color)
+      fill: var(--backgroundAccept)
     }
   }
+}
+
+
+.dialog__wrapper {
+  width: 100%;
+  position: relative;
+  margin: 15px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dialog__file {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+
+.dialog__file-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  img{
+    width: 50px;
+    height: 50px;
+  }
+}
+
+
+
+.dialog__file-button {
+  transition: 0.3s;
+  height: 100px;
+  &:hover{
+    background: #888888;
+  }
+  background: #bbbbbb;
+  color: var(--color);
+  font-weight: 700;
+  display: flex;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.input__head{
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.input__upload{
+  background: #2a2a2a;
+  max-width: 290px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 10px;
 }

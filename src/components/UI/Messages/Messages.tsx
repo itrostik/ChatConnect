@@ -26,16 +26,19 @@ export default function Messages({
   const [imageUrl, setImageUrl] = useState<string>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dialog = useSelector((state: RootState) => state.dialog);
+
+  const [reset, setReset] = useState<boolean>(false);
+
   async function sendMessage() {
-    if ((inputRef.current.value.trim().length > 0 || imageUrl) && !isUpdate) {
+    if (inputRef.current.value.trim().length > 0 && !isUpdate) {
       await axios.post("http://localhost:4444/api/messages", {
         dialog_id: dialog.id,
         sender_id: user.id,
-        messageText: inputRef.current.value || inputValue,
-        imageUrl,
+        messageText: inputRef.current.value,
+        imageUrl: null,
       });
     } else if (
-      (inputRef.current.value.trim().length > 0 || imageUrl) &&
+      inputRef.current.value.trim().length > 0 &&
       isUpdate &&
       activeMessage.messageText !== inputRef.current.value.trim()
     ) {
@@ -43,33 +46,66 @@ export default function Messages({
         dialog_id: dialog.id,
         sender_id: user.id,
         message_id: activeMessage.id,
-        messageText: inputRef.current.value || inputValue,
-        imageUrl,
+        messageText: inputRef.current.value,
+        imageUrl: null,
       });
     }
     inputRef.current.value = "";
     setImageUrl(null);
     setIsUpdate(false);
+    setInputValue(null);
+  }
+
+  async function sendMessageWithImage() {
+    if (((imageUrl && !reset) || inputValue.trim().length > 0) && !isUpdate) {
+      await axios.post("http://localhost:4444/api/messages", {
+        dialog_id: dialog.id,
+        sender_id: user.id,
+        messageText: inputValue,
+        imageUrl: reset ? null : imageUrl,
+      });
+    } else if (
+      ((imageUrl && !reset) || inputValue.trim().length > 0) &&
+      isUpdate
+      // activeMessage.messageText !== inputValue.trim()
+    ) {
+      await axios.put("http://localhost:4444/api/messages", {
+        dialog_id: dialog.id,
+        sender_id: user.id,
+        message_id: activeMessage.id,
+        messageText: inputValue,
+        imageUrl: reset ? null : imageUrl,
+      });
+    }
+    setImageUrl(null);
+    setIsUpdate(false);
+    setInputValue(null);
+    setReset(false);
   }
 
   async function handleFileChange(event) {
     setIsLoading(true);
+    setImageUrl(null);
     try {
       console.log(event);
       const formData = new FormData();
       if (event.target.files[0])
         formData.append("image", event.target.files[0]);
+      console.log(event.target.files[0]);
       const response = await axios.post(
         "http://localhost:4444/api/upload",
         formData,
       );
       if (response.data.imageUrl) {
         setImageUrl(response.data.imageUrl);
+        setInputValue(inputRef.current.value);
       }
     } catch (error) {
       console.error("Error uploading image:", error);
     } finally {
       setIsLoading(false);
+      setReset(false);
+      inputRef.current.value = "";
     }
   }
 
@@ -103,6 +139,7 @@ export default function Messages({
     }
     localStorage.setItem("messages", JSON.stringify(dialog.messages));
   }, [dialog.messages.length]);
+
   function chooseMessage(
     event: React.MouseEvent<HTMLDivElement>,
     message: MessageType,
@@ -132,11 +169,23 @@ export default function Messages({
       data: { dialog_id: dialog.id, message_id },
     });
   }
+
   function writeMessage(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter") {
       sendMessage();
     }
   }
+
+  function writeMessageWithImage(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Enter") {
+      sendMessageWithImage();
+    }
+  }
+
+  function resetImage() {
+    setReset(true);
+  }
+
   return (
     <>
       <div className={styles["dialog__messages"]} ref={scrollChat}>
@@ -278,19 +327,71 @@ export default function Messages({
           <div className={styles["dialog__input-modal"]}>
             <div className={styles["dialog__input-window"]}>
               <div className={styles["dialog__input-image"]}>
-                <img src={imageUrl} alt="" />
+                {reset ? (
+                  <div className={styles["dialog__wrapper"]}>
+                    <span className={styles["input__head"]}>
+                      Загрузите файл c компьютера
+                    </span>
+                    <input
+                      name="file"
+                      type="file"
+                      id="input__file"
+                      className={[styles["input"], styles["dialog__file"]].join(
+                        " ",
+                      )}
+                      onChange={handleFileChange}
+                      accept={".jpg, .jpeg, .png"}
+                    />
+                    <label
+                      htmlFor="input__file"
+                      className={styles["dialog__file-button"]}
+                    >
+                      <span className={styles["dialog__file-icon-wrapper"]}>
+                        <img
+                          className={styles["input__file-icon"]}
+                          src="/img/download.svg"
+                          alt="Выбрать файл"
+                          width="25"
+                        />
+                      </span>
+                    </label>
+                  </div>
+                ) : (
+                  <img src={imageUrl} alt="" />
+                )}
                 <div className={styles["dialog__input-buttons"]}>
                   <div className={styles["dialog__input-editImage"]}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      id="refresh"
-                    >
-                      <path d="M21 21a1 1 0 0 1-1-1V16H16a1 1 0 0 1 0-2h5a1 1 0 0 1 1 1v5A1 1 0 0 1 21 21zM8 10H3A1 1 0 0 1 2 9V4A1 1 0 0 1 4 4V8H8a1 1 0 0 1 0 2z"></path>
-                      <path d="M12 22a10 10 0 0 1-9.94-8.89 1 1 0 0 1 2-.22 8 8 0 0 0 15.5 1.78 1 1 0 1 1 1.88.67A10 10 0 0 1 12 22zM20.94 12a1 1 0 0 1-1-.89A8 8 0 0 0 4.46 9.33a1 1 0 1 1-1.88-.67 10 10 0 0 1 19.37 2.22 1 1 0 0 1-.88 1.1z"></path>
-                    </svg>
+                    <div className={styles["input__wrapper"]}>
+                      <input
+                        name="file"
+                        type="file"
+                        id="input__file"
+                        className={[
+                          styles["input"],
+                          styles["input__file"],
+                        ].join(" ")}
+                        onChange={handleFileChange}
+                        accept={".jpg, .jpeg, .png"}
+                      />
+                      <label
+                        htmlFor="input__file"
+                        className={styles["input__file-button"]}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          id="refresh"
+                        >
+                          <path d="M21 21a1 1 0 0 1-1-1V16H16a1 1 0 0 1 0-2h5a1 1 0 0 1 1 1v5A1 1 0 0 1 21 21zM8 10H3A1 1 0 0 1 2 9V4A1 1 0 0 1 4 4V8H8a1 1 0 0 1 0 2z"></path>
+                          <path d="M12 22a10 10 0 0 1-9.94-8.89 1 1 0 0 1 2-.22 8 8 0 0 0 15.5 1.78 1 1 0 1 1 1.88.67A10 10 0 0 1 12 22zM20.94 12a1 1 0 0 1-1-.89A8 8 0 0 0 4.46 9.33a1 1 0 1 1-1.88-.67 10 10 0 0 1 19.37 2.22 1 1 0 0 1-.88 1.1z"></path>
+                        </svg>
+                      </label>
+                    </div>
                   </div>
-                  <div className={styles["dialog__input-close"]}>
+                  <div
+                    className={styles["dialog__input-close"]}
+                    onClick={() => resetImage()}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -305,7 +406,7 @@ export default function Messages({
                 type="text"
                 placeholder={"Ваше сообщение"}
                 value={inputValue}
-                onKeyDown={(event) => writeMessage(event)}
+                onKeyDown={(event) => writeMessageWithImage(event)}
                 onInput={(event: React.ChangeEvent<HTMLInputElement>) =>
                   setInputValue(event.target.value)
                 }
@@ -313,7 +414,7 @@ export default function Messages({
               />
               <div
                 className={styles["dialog__modal-send"]}
-                onClick={() => sendMessage()}
+                onClick={() => sendMessageWithImage()}
               >
                 <img src="/img/message.svg" alt="" width={30} />
               </div>
