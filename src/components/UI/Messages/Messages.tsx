@@ -6,6 +6,7 @@ import axios from "axios";
 import { MessageType } from "../../../../@types/messageType.ts";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store.ts";
+import ContentLoader from "react-content-loader";
 
 export default function Messages({
   user,
@@ -21,17 +22,19 @@ export default function Messages({
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [activeMessage, setActiveMessage] = useState<MessageType>(null);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [imageUrl, setImageUrl] = useState<string>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dialog = useSelector((state: RootState) => state.dialog);
   async function sendMessage() {
-    if (inputRef.current.value.trim().length > 0 && !isUpdate) {
+    if ((inputRef.current.value.trim().length > 0 || imageUrl) && !isUpdate) {
       await axios.post("http://localhost:4444/api/messages", {
         dialog_id: dialog.id,
         sender_id: user.id,
         messageText: inputRef.current.value,
+        imageUrl,
       });
-      inputRef.current.value = "";
     } else if (
-      inputRef.current.value.trim().length > 0 &&
+      (inputRef.current.value.trim().length > 0 || imageUrl) &&
       isUpdate &&
       activeMessage.messageText !== inputRef.current.value.trim()
     ) {
@@ -40,11 +43,33 @@ export default function Messages({
         sender_id: user.id,
         message_id: activeMessage.id,
         messageText: inputRef.current.value,
+        imageUrl,
       });
-      inputRef.current.value = "";
     }
     inputRef.current.value = "";
+    setImageUrl(null);
     setIsUpdate(false);
+  }
+
+  async function handleFileChange(event) {
+    setIsLoading(true);
+    try {
+      console.log(event);
+      const formData = new FormData();
+      if (event.target.files[0])
+        formData.append("image", event.target.files[0]);
+      const response = await axios.post(
+        "http://localhost:4444/api/upload",
+        formData,
+      );
+      if (response.data.imageUrl) {
+        setImageUrl(response.data.imageUrl);
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -118,7 +143,16 @@ export default function Messages({
                 onContextMenu={(event) => chooseMessage(event, message)}
               >
                 <div className={styles["message-user__text"]}>
-                  {message.messageText}
+                  {message.imageUrl ? (
+                    <div className={styles["message-user-image"]}>
+                      <img src={message.imageUrl} alt="" />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <div className={styles["message-user__textMessage"]}>
+                    {message.messageText}
+                  </div>
                 </div>
                 <svg
                   width="11"
@@ -180,6 +214,13 @@ export default function Messages({
             return (
               <div key={message.id} className={styles["message-mate"]}>
                 <div className={styles["message-mate__text"]}>
+                  {message.imageUrl ? (
+                    <div className={styles["message-user-image"]}>
+                      <img src={message.imageUrl} alt="" />
+                    </div>
+                  ) : (
+                    ""
+                  )}
                   {message.messageText}
                 </div>
                 <svg
@@ -208,6 +249,69 @@ export default function Messages({
         })}
       </div>
       <div className={styles["dialog__input-message"]}>
+        {isLoading ? (
+          <div className={styles["dialog__input-modal"]}>
+            <div className={styles["dialog__input-window"]}>
+              <ContentLoader
+                speed={2}
+                width={400}
+                height={400}
+                viewBox="0 0 400 400"
+                backgroundColor="#d9d9d9"
+                foregroundColor="#ededed"
+              >
+                <rect x="0" y="0" rx="4" ry="4" width="400" height="200" />
+                <rect x="0" y="360" rx="4" ry="4" width="400" height="40" />
+              </ContentLoader>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+        {imageUrl ? (
+          <div className={styles["dialog__input-modal"]}>
+            <div className={styles["dialog__input-window"]}>
+              <div className={styles["dialog__input-image"]}>
+                <img src={imageUrl} alt="" />
+              </div>
+              <input
+                type="text"
+                placeholder={"Ваше сообщение"}
+                ref={inputRef}
+                onKeyDown={(event) => writeMessage(event)}
+                className={styles["dialog__modal-input"]}
+              />
+              <div
+                className={styles["dialog__modal-send"]}
+                onClick={() => sendMessage()}
+              >
+                <img src="/img/message.svg" alt="" width={30} />
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+        <div className={styles["input__wrapper"]}>
+          <input
+            name="file"
+            type="file"
+            id="input__file"
+            className={[styles["input"], styles["input__file"]].join(" ")}
+            onChange={handleFileChange}
+            accept={".jpg, .jpeg, .png"}
+          />
+          <label htmlFor="input__file" className={styles["input__file-button"]}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              id="plus"
+              className={styles["dialog__input-addFile"]}
+            >
+              <path d="M19,11H13V5a1,1,0,0,0-2,0v6H5a1,1,0,0,0,0,2h6v6a1,1,0,0,0,2,0V13h6a1,1,0,0,0,0-2Z"></path>
+            </svg>
+          </label>
+        </div>
         <input
           type="text"
           placeholder={"Введите сообщение"}
