@@ -32,7 +32,7 @@ export default function Messages({ user }: { user: UserType }) {
       document.removeEventListener("click", () => {
         dispatch(setIsOpenModal(false));
       });
-      setIsScrolling(true);
+      dispatch(setIsScrolling(true));
     };
   }, []);
 

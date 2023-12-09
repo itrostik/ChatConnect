@@ -7,7 +7,6 @@ import db from "../../../utils/database.ts";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { choose } from "../../../redux/slices/dialogSlice.ts";
-import { setIsScrolling } from "../../../redux/slices/messagesSlice.ts";
 
 import ContentLoader from "react-content-loader";
 import Messages from "../Messages/Messages.tsx";
@@ -46,9 +45,8 @@ export default function Dialog({
       getMate();
     } else {
       setMate(dialog.mate);
-      dispatch(setIsScrolling(true));
     }
-  }, [dialog]);
+  }, [dialog.id]);
   return (
     <div className={styles["dialog"]}>
       {!isLoading && mate ? (

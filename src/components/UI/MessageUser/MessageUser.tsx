@@ -6,6 +6,7 @@ import {
   setActiveMessage,
   setImageUrl,
   setIsOpenModal,
+  setIsScrolling,
   setIsUpdate,
   setMessageValue,
 } from "../../../../redux/slices/messagesSlice.ts";
@@ -45,6 +46,7 @@ export default function MessageUser({ message, inputRef }) {
     await axios.delete("http://localhost:4444/api/messages", {
       data: { dialog_id: dialog.id, message_id },
     });
+    dispatch(setIsScrolling(false));
   }
 
   return (
