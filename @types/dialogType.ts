@@ -5,4 +5,5 @@ export type DialogType = {
   messages: MessageType[];
   user_id: string;
   user2_id: string;
+  countNotRead: number;
 };

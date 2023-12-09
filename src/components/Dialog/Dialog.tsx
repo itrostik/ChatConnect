@@ -12,6 +12,7 @@ import ContentLoader from "react-content-loader";
 import Messages from "../Messages/Messages.tsx";
 import { MateType } from "../../../@types/mateType.ts";
 import { setIsScrolling } from "../../../redux/slices/messagesSlice.ts";
+import { MessageType } from "../../../@types/messageType.ts";
 export default function Dialog({
   dialog,
   user,
@@ -23,8 +24,21 @@ export default function Dialog({
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
+    localStorage.setItem("messages", JSON.stringify(dialog.messages));
     const unsub = onSnapshot(doc(db, "dialogs", dialog.id), (doc) => {
-      dispatch(choose({ ...doc.data(), id: doc.id, mate: dialog.mate }));
+      const countNotRead = dialog.messages.reduce(
+        (accumulator: number, message: MessageType) => {
+          if (message.sender_id !== user.id && !message.read) {
+            accumulator++;
+          }
+          return accumulator;
+        },
+        0,
+      );
+      console.log(countNotRead);
+      dispatch(
+        choose({ ...doc.data(), id: doc.id, mate: dialog.mate, countNotRead }),
+      );
     });
     return () => {
       unsub();
@@ -44,6 +58,7 @@ export default function Dialog({
         setIsLoading(false);
       };
       getMate();
+      localStorage.setItem("messages", JSON.stringify(dialog.messages));
     } else {
       setMate(dialog.mate);
       dispatch(setIsScrolling(true));

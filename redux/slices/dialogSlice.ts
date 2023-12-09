@@ -8,6 +8,7 @@ const initialState: DialogType & MateType = {
   user2_id: "",
   user_id: "",
   mate: null,
+  countNotRead: 0,
 };
 
 export const dialogSlice = createSlice({

@@ -43,7 +43,19 @@ export default function Sidebar({
         const mate = await axios.get<UserType>(
           `http://localhost:4444/api/users/${mateId}`,
         );
-        if (mate.data) dialogs.push({ ...dialog, id: doc.id, mate: mate.data });
+        const countNotRead = dialog.messages.reduce((accum, message) => {
+          if (message.sender_id === mateId && !message.read) {
+            accum++;
+          }
+          return accum;
+        }, 0);
+        if (mate.data)
+          dialogs.push({
+            ...dialog,
+            id: doc.id,
+            mate: mate.data,
+            countNotRead,
+          });
         else dialogs.push({ ...dialog, id: doc.id });
         if (index + 1 === dialogSize) {
           dialogs = dialogs.sort((a, b) => {
@@ -143,11 +155,17 @@ export default function Sidebar({
                         ? getLastMessage(dialog.messages).messageText
                         : ""}
                     </div>
-                    <div className={styles["dialog__lastmessage-time"]}>
-                      {dialog.messages.length > 0
-                        ? getDate(getLastMessage(dialog.messages).created)
-                        : ""}
-                    </div>
+                    {dialog.countNotRead > 0 ? (
+                      <div className={styles["dialog__notRead"]}>
+                        {dialog.countNotRead}
+                      </div>
+                    ) : (
+                      <div className={styles["dialog__lastmessage-time"]}>
+                        {dialog.messages.length > 0
+                          ? getDate(getLastMessage(dialog.messages).created)
+                          : ""}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

@@ -51,7 +51,7 @@ export default function MessageUser({ message, inputRef }) {
 
   return (
     <div
-      key={message.id}
+      id={message.id}
       className={styles["message-user"]}
       onContextMenu={(event) => chooseMessage(event, message)}
     >
