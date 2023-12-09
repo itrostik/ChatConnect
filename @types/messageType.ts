@@ -5,4 +5,5 @@ export type MessageType = {
   sender_id: string;
   updated: boolean;
   imageUrl: string | null;
+  read: boolean;
 };
