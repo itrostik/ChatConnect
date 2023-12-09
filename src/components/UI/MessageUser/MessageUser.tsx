@@ -79,6 +79,35 @@ export default function MessageUser({ message, inputRef }) {
       </svg>
       <div className={styles["message-user__time"]}>
         {getDate(message.created)}
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+          id="check-read"
+          className={styles["message-user__read"]}
+        >
+          <path
+            fill="#ffffff"
+            fillRule="evenodd"
+            d="M15.4933 6.93502C15.8053 7.20743 15.8374 7.68122 15.565 7.99325L7.70786 16.9933C7.56543 17.1564 7.35943 17.25 7.14287 17.25C6.9263 17.25 6.72031 17.1564 6.57788 16.9933L3.43502 13.3933C3.16261 13.0812 3.19473 12.6074 3.50677 12.335C3.8188 12.0626 4.29259 12.0947 4.565 12.4068L7.14287 15.3596L14.435 7.00677C14.7074 6.69473 15.1812 6.66261 15.4933 6.93502Z"
+            clipRule="evenodd"
+            className={
+              message.read ? styles["path-read"] : styles["path-noRead"]
+            }
+          ></path>
+          <path
+            fill="#ffffff"
+            fillRule="evenodd"
+            d="M20.5173 7.01941C20.8172 7.30507 20.8288 7.77981 20.5431 8.07975L11.9715 17.0798C11.82 17.2388 11.6064 17.3235 11.387 17.3114C11.1677 17.2993 10.9647 17.1916 10.8317 17.0169L10.4033 16.4544C10.1524 16.1248 10.2161 15.6542 10.5457 15.4033C10.8288 15.1877 11.216 15.2044 11.4786 15.4223L19.4569 7.04525C19.7426 6.74531 20.2173 6.73374 20.5173 7.01941Z"
+            clipRule="evenodd"
+            className={
+              message.read ? styles["path-read"] : styles["path-noRead"]
+            }
+          ></path>
+        </svg>
       </div>
       {message.updated ? (
         <div className={styles["message-user__edited"]}>(изменено)</div>

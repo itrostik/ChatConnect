@@ -11,6 +11,7 @@ import { choose } from "../../../redux/slices/dialogSlice.ts";
 import ContentLoader from "react-content-loader";
 import Messages from "../Messages/Messages.tsx";
 import { MateType } from "../../../@types/mateType.ts";
+import { setIsScrolling } from "../../../redux/slices/messagesSlice.ts";
 export default function Dialog({
   dialog,
   user,
@@ -45,6 +46,7 @@ export default function Dialog({
       getMate();
     } else {
       setMate(dialog.mate);
+      dispatch(setIsScrolling(true));
     }
   }, [dialog.id]);
   return (
