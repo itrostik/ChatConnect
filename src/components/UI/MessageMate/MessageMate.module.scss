@@ -1,0 +1,100 @@
+.message-mate {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-self: flex-start;
+  position: relative;
+  max-width: 70%;
+
+  &__text {
+    background: var(--backgroundMessageMate);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+  }
+
+  svg {
+    position: absolute;
+    width: 11px;
+    height: 7px;
+    bottom: 17px;
+    left: 0;
+
+    path {
+      fill: var(--backgroundMessageMate);
+    }
+  }
+
+  &__edited {
+    position: absolute;
+    left: 33px;
+    bottom: 1px;
+    font-size: 11px;
+    opacity: 0.7;
+    color: var(--color);
+  }
+}
+
+.message-user {
+  &__edit, &__delete {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 5px;
+
+    &:hover {
+      background: var(--background);
+      color: var(--color);
+
+      path {
+        fill: var(--backgroundAccept);
+      }
+    }
+
+    path {
+      fill: var(--background);
+    }
+  }
+
+  &__edit {
+    svg {
+      width: 30px;
+      height: 25px;
+
+    }
+  }
+
+  &__delete {
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  &__text {
+    background: var(--backgroundMessageUser);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-end;
+  }
+
+  &__time {
+    font-size: 12px;
+    color: var(--color);
+    opacity: 0.3;
+  }
+}
+.message-mate-image {
+  img {
+    border-radius: 5px;
+  }
+}

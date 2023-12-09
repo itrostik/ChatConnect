@@ -4,7 +4,7 @@ import Header from "../Header/Header.tsx";
 import Sidebar from "../Sidebar/Sidebar.tsx";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store.ts";
-import Dialog from "../UI/Dialog/Dialog.tsx";
+import Dialog from "../Dialog/Dialog.tsx";
 import { useState } from "react";
 
 export default function Main() {

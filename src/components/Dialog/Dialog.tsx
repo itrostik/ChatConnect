@@ -1,15 +1,17 @@
 import styles from "./Dialog.module.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { UserType } from "../../../../@types/userType.ts";
-import { DialogType } from "../../../../@types/dialogType.ts";
-import db from "../../../../utils/database.ts";
+import { UserType } from "../../../@types/userType.ts";
+import { DialogType } from "../../../@types/dialogType.ts";
+import db from "../../../utils/database.ts";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { choose } from "../../../../redux/slices/dialogSlice.ts";
+import { choose } from "../../../redux/slices/dialogSlice.ts";
+import { setIsScrolling } from "../../../redux/slices/messagesSlice.ts";
+
 import ContentLoader from "react-content-loader";
 import Messages from "../Messages/Messages.tsx";
-import { MateType } from "../../../../@types/mateType.ts";
+import { MateType } from "../../../@types/mateType.ts";
 export default function Dialog({
   dialog,
   user,
@@ -20,7 +22,6 @@ export default function Dialog({
   const [mate, setMate] = useState<UserType>(null);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isScrolling, setIsScrolling] = useState<boolean>(true);
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "dialogs", dialog.id), (doc) => {
       dispatch(choose({ ...doc.data(), id: doc.id, mate: dialog.mate }));
@@ -45,7 +46,7 @@ export default function Dialog({
       getMate();
     } else {
       setMate(dialog.mate);
-      setIsScrolling(true);
+      dispatch(setIsScrolling(true));
     }
   }, [dialog]);
   return (
@@ -65,11 +66,7 @@ export default function Dialog({
               </div>
             </div>
           </div>
-          <Messages
-            user={user}
-            isScrolling={isScrolling}
-            setIsScrolling={setIsScrolling}
-          />
+          <Messages user={user} />
         </>
       ) : (
         <ContentLoader

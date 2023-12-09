@@ -12,6 +12,6 @@ export const themes = [
   {
     key: "christmas",
     value: "Новогодняя тема",
-    imgUrl: "/img/snowlake.svg",
+    imgUrl: "/img/snowflake.svg",
   },
 ];

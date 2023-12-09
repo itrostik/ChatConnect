@@ -1,0 +1,77 @@
+.dialog__input-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  &:hover{
+    display: flex;
+  }
+  div {
+    cursor: pointer;
+  }
+  svg {
+    width: 20px;
+    height: 20px;
+    align-items: center;
+    path {
+      fill: var(--backgroundAccept)
+    }
+  }
+}
+
+
+.dialog__input-modal {
+  background: rgba(86, 86, 86, 0.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.dialog__input-window {
+  position: relative;
+  background: var(--background);
+  width: 400px;
+  height: 400px;
+  border-radius: 5px;
+  border: 1px solid var(--placeholder);
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  img {
+    border-radius: 5px;
+    max-height: 210px;
+  }
+}
+
+.dialog__input-image {
+  position: relative;
+  img:hover ~ .dialog__input-buttons {
+    display: flex;
+  }
+
+  flex: 1 1 auto;
+}
+
+.dialog__modal-input {
+  width: 100%;
+  padding: 10px 40px 10px 10px;
+  border: 1px solid var(--placeholder);
+  background: var(--backgroundAccept);
+}
+
+.dialog__modal-send {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 3;
+  cursor: pointer;
+}

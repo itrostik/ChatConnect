@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import themeReducer from "./slices/themeSlice.ts";
 import userReducer from "./slices/userSlice.ts";
 import dialogReducer from "./slices/dialogSlice.ts";
+import messagesReducer from "./slices/messagesSlice.ts";
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
     user: userReducer,
     dialog: dialogReducer,
+    messages: messagesReducer,
   },
 });
 
