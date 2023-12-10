@@ -5,8 +5,10 @@ import Sidebar from "../Sidebar/Sidebar.tsx";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store.ts";
 import Dialog from "../Dialog/Dialog.tsx";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
+
+import { useBeforeUnload } from "react-router-dom";
 
 export default function Main() {
   if (!localStorage.getItem("token")) {
@@ -16,19 +18,27 @@ export default function Main() {
   const user = useSelector((state: RootState) => state.user);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  function setOnline() {
+    axios.patch(`http://localhost:4444/api/users/`, {
+      userId: user.id,
+      online: true,
+    });
+  }
+
+  function setOffline() {
+    axios.patch(`http://localhost:4444/api/users/`, {
+      userId: user.id,
+      online: false,
+    });
+  }
+
+  useBeforeUnload(
+    useCallback(() => {
+      setOffline();
+    }, []),
+  );
+
   useEffect(() => {
-    const setOnline = async () => {
-      await axios.patch(`http://localhost:4444/api/users/`, {
-        userId: user.id,
-        online: true,
-      });
-    };
-    const setOffline = async () => {
-      await axios.patch(`http://localhost:4444/api/users/`, {
-        userId: user.id,
-        online: false,
-      });
-    };
     setOnline();
     return () => {
       setOffline();
