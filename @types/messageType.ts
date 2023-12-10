@@ -6,4 +6,5 @@ export type MessageType = {
   updated: boolean;
   imageUrl: string | null;
   read: boolean;
+  isLoading?: boolean;
 };
