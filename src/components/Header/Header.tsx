@@ -61,6 +61,18 @@ const Header = ({ user }: { user: UserType }) => {
 
   function exit() {
     localStorage.removeItem("token");
+    localStorage.removeItem("dialogs");
+    localStorage.removeItem("messages");
+    dispatch(
+      choose({
+        id: "",
+        messages: [],
+        user2_id: "",
+        user_id: "",
+        mate: null,
+        countNotRead: 0,
+      }),
+    );
     navigate("/login");
   }
 

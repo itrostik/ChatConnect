@@ -61,6 +61,7 @@ export default function Messages({ user }: { user: UserType }) {
       });
     }
     localStorage.setItem("messages", JSON.stringify(dialog.messages));
+    handleScroll();
   }, [dialog.messages.length]);
 
   async function handleScroll() {

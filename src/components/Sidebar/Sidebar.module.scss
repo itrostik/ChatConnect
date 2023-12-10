@@ -2,11 +2,13 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  border-right: 1px solid var(--borderColor);
-  height: 100%;
   min-height: 100%;
-  flex: 1 1 auto;
   position: relative;
+  height: calc(100vh - 130px);
+  border-right: 1px solid var(--borderColor);
+  min-width: 300px;
+  max-width: 700px;
+  user-select: none;
   &__search{
     padding: 0 10px 0 0;
     label{
@@ -79,6 +81,9 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    align-items: flex-end;
+    gap: 5px;
+
   }
   &__info{
     display: flex;

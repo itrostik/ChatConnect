@@ -1,14 +1,14 @@
 .dialog {
+  min-height: 100%;
   &__messages {
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    //justify-content: flex-end;
+    overflow-y: auto;
     flex: 1 1 auto;
-
     &::-webkit-scrollbar {
       width: 0;
     }
-
     margin: 10px 0;
   }
 
