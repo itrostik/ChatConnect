@@ -101,6 +101,12 @@ export default function Sidebar({
     setDialogs(JSON.parse(localStorage.getItem("dialogs")));
   }
 
+  function setLastMessageInSidebar(messageText: string) {
+    return messageText.length < 50
+      ? messageText
+      : messageText.slice(0, 49).trim() + "...";
+  }
+
   return (
     <>
       {!isLoading ? (
@@ -152,7 +158,14 @@ export default function Sidebar({
                   <div className={styles["dialog__lastmessage"]}>
                     <div className={styles["dialog__lastmessage-text"]}>
                       {dialog.messages.length > 0
-                        ? getLastMessage(dialog.messages).messageText
+                        ? getLastMessage(dialog.messages).sender_id === user.id
+                          ? "Вы: " +
+                            setLastMessageInSidebar(
+                              getLastMessage(dialog.messages).messageText,
+                            )
+                          : setLastMessageInSidebar(
+                              getLastMessage(dialog.messages).messageText,
+                            )
                         : ""}
                     </div>
                     {dialog.countNotRead > 0 ? (
