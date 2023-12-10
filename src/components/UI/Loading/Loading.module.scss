@@ -1,3 +1,12 @@
+:root[data-theme='christmas'] {
+  .loading__block {
+    background-image: url('/public/img/snow.svg');
+    background-size: 100px 100px;
+    animation: moveSlideshow 10s linear infinite forwards;
+  }
+}
+
+
 .loading__block{
   height: 100vh;
   width: 100%;
@@ -5,9 +14,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: url('/public/img/snow.svg');
-  background-size: 100px 100px; /*только для этого примера*/
-  animation: moveSlideshow 5s linear infinite forwards;
 }
 
 .loading__logo{
