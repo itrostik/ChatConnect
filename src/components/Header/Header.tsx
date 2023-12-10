@@ -12,7 +12,13 @@ import { choose } from "../../../redux/slices/dialogSlice.ts";
 import { DialogType } from "../../../@types/dialogType.ts";
 import { themes } from "../../../constants/theme.ts";
 
-const Header = ({ user }: { user: UserType }) => {
+const Header = ({
+  user,
+  setIsDialogLoading,
+}: {
+  user: UserType;
+  setIsDialogLoading: React.Dispatch<boolean>;
+}) => {
   const theme = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
   const [users, setUsers] = useState<UserType[]>([]);
@@ -81,15 +87,25 @@ const Header = ({ user }: { user: UserType }) => {
     userId: string,
   ) {
     event.stopPropagation();
+    setIsDialogLoading(true);
     const response = await axios.get<DialogType[]>(
       `https://chatconnectapp.netlify.app/api/dialogs/user/${user.id}`,
+    );
+    const mate = await axios.get(
+      `https://chatconnectapp.netlify.app/api/users/${userId}`,
     );
     const dialogs = response.data;
     const dialog = dialogs.find(
       (dialog) => dialog.user_id === userId || dialog.user2_id === userId,
     );
     if (dialog) {
-      dispatch(choose(dialog));
+      dispatch(
+        choose({
+          ...dialog,
+          mate: { ...mate.data, id: userId },
+          countNotRead: 0,
+        }),
+      );
     } else {
       const newDialog = await axios.post<DialogType>(
         "https://chatconnectapp.netlify.app/api/dialogs",
@@ -98,8 +114,15 @@ const Header = ({ user }: { user: UserType }) => {
           user2_id: userId,
         },
       );
-      dispatch(choose(newDialog.data));
+      dispatch(
+        choose({
+          ...newDialog.data,
+          mate: { ...mate.data, id: userId },
+          countNotRead: 0,
+        }),
+      );
     }
+    setIsDialogLoading(false);
     reset();
   }
 

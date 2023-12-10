@@ -1,6 +1,5 @@
 import styles from "./Dialog.module.scss";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { UserType } from "../../../@types/userType.ts";
 import { DialogType } from "../../../@types/dialogType.ts";
 import db from "../../../utils/database.ts";
@@ -17,13 +16,13 @@ import DialogHeader from "./DialogHeader/DialogHeader.tsx";
 export default function Dialog({
   dialog,
   user,
+  isDialogLoading,
 }: {
   dialog: DialogType & MateType;
   user: UserType;
+  isDialogLoading: boolean;
 }) {
-  const [mate, setMate] = useState<UserType>(null);
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "dialogs", dialog.id), (doc) => {
       const countNotRead = dialog.messages.reduce(
@@ -46,28 +45,12 @@ export default function Dialog({
   }, [dialog.id]);
 
   useEffect(() => {
-    if (!dialog.mate) {
-      setIsLoading(true);
-      const getMate = async () => {
-        const mateId =
-          dialog.user2_id !== user.id ? dialog.user2_id : dialog.user_id;
-        const mate = await axios.get<UserType>(
-          `https://chatconnectapp.netlify.app/api/users/${mateId}`,
-        );
-        setMate({ ...mate.data, id: mateId });
-        setIsLoading(false);
-      };
-      getMate();
-      localStorage.setItem("messages", JSON.stringify(dialog.messages));
-    } else {
-      setMate(dialog.mate);
-      dispatch(setIsScrolling(true));
-      localStorage.setItem("messages", JSON.stringify(dialog.messages));
-    }
+    dispatch(setIsScrolling(true));
+    localStorage.setItem("messages", JSON.stringify(dialog.messages));
   }, [dialog.id]);
   return (
     <div className={styles["dialog"]}>
-      {!isLoading && mate ? (
+      {!isDialogLoading && dialog.mate ? (
         <>
           <DialogHeader dialog={dialog} />
           <Messages user={user} />

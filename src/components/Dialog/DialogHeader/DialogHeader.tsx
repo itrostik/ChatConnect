@@ -9,7 +9,7 @@ import { getDate } from "../../../../utils/date.ts";
 export default function DialogHeader({ dialog }) {
   const dispatch = useDispatch();
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, "users", dialog.mate?.id), (doc) => {
+    const unsub = onSnapshot(doc(db, "users", dialog.mate.id), (doc) => {
       dispatch(
         choose({
           ...dialog,

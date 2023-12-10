@@ -17,7 +17,7 @@ export default function Main() {
   const dialog = useSelector((state: RootState) => state.dialog);
   const user = useSelector((state: RootState) => state.user);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const [isDialogLoading, setIsDialogLoading] = useState<boolean>(false);
   function setOnline() {
     axios.patch(`https://chatconnectapp.netlify.app/api/users/`, {
       userId: user.id,
@@ -47,7 +47,7 @@ export default function Main() {
 
   return (
     <div className={styles["main"]}>
-      <Header user={user} />
+      <Header user={user} setIsDialogLoading={setIsDialogLoading} />
       <div className={styles["main__content"]}>
         <Sidebar
           user={user}
@@ -55,7 +55,11 @@ export default function Main() {
           setIsLoading={setIsLoading}
         />
         {dialog.id ? (
-          <Dialog dialog={dialog} user={user} />
+          <Dialog
+            dialog={dialog}
+            user={user}
+            isDialogLoading={isDialogLoading}
+          />
         ) : !isLoading ? (
           <div className={styles["main__content-dialog"]}>
             Выберите собеседника
