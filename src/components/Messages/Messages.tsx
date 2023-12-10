@@ -39,10 +39,6 @@ export default function Messages({ user }: { user: UserType }) {
     };
   }, []);
 
-  console.log(
-    scrollChat.current.scrollHeight,
-    scrollChat.current.scrollTop + scrollChat.current.clientHeight,
-  );
   useEffect(() => {
     const lastMessageElement = document.getElementById(
       dialog.messages[dialog.messages.length - 1].id,
