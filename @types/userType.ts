@@ -6,4 +6,6 @@ export type UserType = {
   login: string;
   passwordHash: string;
   username: string;
+  online?: boolean;
+  lastActive?: number;
 };
