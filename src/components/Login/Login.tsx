@@ -78,7 +78,7 @@ export default function Login({
       <>
         <h1 className={styles["login__name"]}>
           <span>Вход</span>
-          <img src="/img/santa.svg" alt="" />
+          {theme === "christmas" ? <img src="/img/santa.svg" alt="" /> : ""}
         </h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -102,11 +102,15 @@ export default function Login({
                   : styles["error__input"]
               }
             />
-            <img
-              src="/img/santa-hat.svg"
-              alt=""
-              className={styles["santa-hat"]}
-            />
+            {theme === "christmas" ? (
+              <img
+                src="/img/santa-hat.svg"
+                alt=""
+                className={styles["santa-hat"]}
+              />
+            ) : (
+              ""
+            )}
           </label>
           {errors.login && (
             <p className={styles["error__text"]}>{errors.login.message}</p>
@@ -129,11 +133,15 @@ export default function Login({
                   : styles["error__input"]
               }
             />
-            <img
-              src="/img/santa-hat.svg"
-              alt=""
-              className={styles["santa-hat"]}
-            />
+            {theme === "christmas" ? (
+              <img
+                src="/img/santa-hat.svg"
+                alt=""
+                className={styles["santa-hat"]}
+              />
+            ) : (
+              ""
+            )}
           </label>
           {errors.password && (
             <p className={styles["error__text"]}>{errors.password.message}</p>

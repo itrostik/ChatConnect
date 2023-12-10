@@ -130,7 +130,7 @@ export default function Register({
       <>
         <h1 className={styles["registration__name"]}>
           <span>Регистрация</span>
-          <img src="/img/santa.svg" alt="" />
+          {theme === "christmas" ? <img src="/img/santa.svg" alt="" /> : ""}
         </h1>
         <div className={styles["input__wrapper"]}>
           <span className={styles["input__head"]}>
@@ -182,11 +182,15 @@ export default function Register({
             ) : (
               ""
             )}
-            <img
-              src="/img/santa-hat.svg"
-              alt=""
-              className={styles["santa-hat"]}
-            />
+            {theme === "christmas" ? (
+              <img
+                src="/img/santa-hat.svg"
+                alt=""
+                className={styles["santa-hat"]}
+              />
+            ) : (
+              ""
+            )}
           </label>
           <label htmlFor="">
             <input
@@ -206,11 +210,15 @@ export default function Register({
                   : styles["error__input"]
               }
             />
-            <img
-              src="/img/santa-hat.svg"
-              alt=""
-              className={styles["santa-hat"]}
-            />
+            {theme === "christmas" ? (
+              <img
+                src="/img/santa-hat.svg"
+                alt=""
+                className={styles["santa-hat"]}
+              />
+            ) : (
+              ""
+            )}
           </label>
           {errors.firstName && (
             <p className={styles["error__text"]}>{errors.firstName.message}</p>
@@ -233,11 +241,15 @@ export default function Register({
                   : styles["error__input"]
               }
             />
-            <img
-              src="/img/santa-hat.svg"
-              alt=""
-              className={styles["santa-hat"]}
-            />
+            {theme === "christmas" ? (
+              <img
+                src="/img/santa-hat.svg"
+                alt=""
+                className={styles["santa-hat"]}
+              />
+            ) : (
+              ""
+            )}
           </label>
           {errors.lastName && (
             <p className={styles["error__text"]}>{errors.lastName.message}</p>
@@ -260,11 +272,15 @@ export default function Register({
                   : styles["error__input"]
               }
             />
-            <img
-              src="/img/santa-hat.svg"
-              alt=""
-              className={styles["santa-hat"]}
-            />
+            {theme === "christmas" ? (
+              <img
+                src="/img/santa-hat.svg"
+                alt=""
+                className={styles["santa-hat"]}
+              />
+            ) : (
+              ""
+            )}
           </label>
 
           {errors.username && (
@@ -288,11 +304,15 @@ export default function Register({
                   : styles["error__input"]
               }
             />
-            <img
-              src="/img/santa-hat.svg"
-              alt=""
-              className={styles["santa-hat"]}
-            />
+            {theme === "christmas" ? (
+              <img
+                src="/img/santa-hat.svg"
+                alt=""
+                className={styles["santa-hat"]}
+              />
+            ) : (
+              ""
+            )}
           </label>
 
           {errors.login && (
@@ -316,11 +336,15 @@ export default function Register({
                   : styles["error__input"]
               }
             />
-            <img
-              src="/img/santa-hat.svg"
-              alt=""
-              className={styles["santa-hat"]}
-            />
+            {theme === "christmas" ? (
+              <img
+                src="/img/santa-hat.svg"
+                alt=""
+                className={styles["santa-hat"]}
+              />
+            ) : (
+              ""
+            )}
           </label>
           {errors.password && (
             <p className={styles["error__text"]}>{errors.password.message}</p>

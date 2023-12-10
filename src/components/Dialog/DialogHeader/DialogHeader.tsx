@@ -20,7 +20,7 @@ export default function DialogHeader({ dialog }) {
     return () => {
       unsub();
     };
-  }, [dialog.mate.online]);
+  }, []);
 
   return (
     <div className={styles["dialog__header"]}>
