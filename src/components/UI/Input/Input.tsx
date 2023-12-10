@@ -37,17 +37,20 @@ export default function Input({ inputRef }) {
         choose({ ...dialog, messages: [...dialog.messages, newMessage] }),
       );
       console.log("что происходит?");
-      const response = await axios.post("http://localhost:4444/api/messages", {
-        newMessage,
-        dialog_id: dialog.id,
-      });
+      const response = await axios.post(
+        "https://chatconnectapp.netlify.app/api/messages",
+        {
+          newMessage,
+          dialog_id: dialog.id,
+        },
+      );
       console.log(response.data);
     } else if (
       inputValue.trim().length > 0 &&
       messages.isUpdate &&
       messages.activeMessage.messageText !== inputValue.trim()
     ) {
-      await axios.put("http://localhost:4444/api/messages", {
+      await axios.put("https://chatconnectapp.netlify.app/api/messages", {
         dialog_id: dialog.id,
         sender_id: user.id,
         message_id: messages.activeMessage.id,

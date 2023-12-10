@@ -44,7 +44,7 @@ export default function MessageUser({ message, inputRef }) {
   }
 
   async function deleteMessage(message_id: string) {
-    await axios.delete("http://localhost:4444/api/messages", {
+    await axios.delete("https://chatconnectapp.netlify.app/api/messages", {
       data: { dialog_id: dialog.id, message_id },
     });
     dispatch(setIsScrolling(false));

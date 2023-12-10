@@ -41,7 +41,7 @@ export default function Sidebar({
         const mateId =
           dialog.user_id === user.id ? dialog.user2_id : dialog.user_id;
         const mate = await axios.get<UserType>(
-          `http://localhost:4444/api/users/${mateId}`,
+          `https://chatconnectapp.netlify.app/api/users/${mateId}`,
         );
         const countNotRead = dialog.messages.reduce((accum, message) => {
           if (message.sender_id === mateId && !message.read) {

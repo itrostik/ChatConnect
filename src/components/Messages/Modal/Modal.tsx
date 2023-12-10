@@ -33,7 +33,6 @@ export default function Modal({ inputRef }) {
         inputValue.trim().length > 0) &&
       !messages.isUpdate
     ) {
-      console.log(52);
       const newMessage: MessageType = {
         id: Math.random().toString(16).slice(2),
         sender_id: user.id,
@@ -48,7 +47,7 @@ export default function Modal({ inputRef }) {
       dispatch(
         choose({ ...dialog, messages: [...dialog.messages, newMessage] }),
       );
-      await axios.post("http://localhost:4444/api/messages", {
+      await axios.post("https://chatconnectapp.netlify.app/api/messages", {
         newMessage,
         dialog_id: dialog.id,
       });
@@ -58,7 +57,7 @@ export default function Modal({ inputRef }) {
       messages.isUpdate
       // activeMessage.messageText !== inputValue.trim()
     ) {
-      await axios.put("http://localhost:4444/api/messages", {
+      await axios.put("https://chatconnectapp.netlify.app/api/messages", {
         dialog_id: dialog.id,
         sender_id: user.id,
         message_id: messages.activeMessage.id,

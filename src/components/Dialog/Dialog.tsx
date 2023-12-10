@@ -52,7 +52,7 @@ export default function Dialog({
         const mateId =
           dialog.user2_id !== user.id ? dialog.user2_id : dialog.user_id;
         const mate = await axios.get<UserType>(
-          `http://localhost:4444/api/users/${mateId}`,
+          `https://chatconnectapp.netlify.app/api/users/${mateId}`,
         );
         setMate({ ...mate.data, id: mateId });
         setIsLoading(false);

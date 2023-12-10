@@ -42,7 +42,7 @@ const Header = ({ user }: { user: UserType }) => {
   async function search() {
     if (inputRef.current.value.trim().length > 0) {
       const response = await axios.get<UserType[]>(
-        "http://localhost:4444/api/users",
+        "https://chatconnectapp.netlify.app/api/users",
       );
       let users = response.data;
       users = users.filter((user) =>
@@ -82,7 +82,7 @@ const Header = ({ user }: { user: UserType }) => {
   ) {
     event.stopPropagation();
     const response = await axios.get<DialogType[]>(
-      `http://localhost:4444/api/dialogs/user/${user.id}`,
+      `https://chatconnectapp.netlify.app/api/dialogs/user/${user.id}`,
     );
     const dialogs = response.data;
     const dialog = dialogs.find(
@@ -92,7 +92,7 @@ const Header = ({ user }: { user: UserType }) => {
       dispatch(choose(dialog));
     } else {
       const newDialog = await axios.post<DialogType>(
-        "http://localhost:4444/api/dialogs",
+        "https://chatconnectapp.netlify.app/api/dialogs",
         {
           user_id: user.id,
           user2_id: userId,

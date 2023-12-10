@@ -19,14 +19,14 @@ export default function Main() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   function setOnline() {
-    axios.patch(`http://localhost:4444/api/users/`, {
+    axios.patch(`https://chatconnectapp.netlify.app/api/users/`, {
       userId: user.id,
       online: true,
     });
   }
 
   function setOffline() {
-    axios.patch(`http://localhost:4444/api/users/`, {
+    axios.patch(`https://chatconnectapp.netlify.app/api/users/`, {
       userId: user.id,
       online: false,
     });

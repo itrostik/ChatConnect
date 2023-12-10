@@ -87,7 +87,7 @@ export default function Messages({ user }: { user: UserType }) {
         const formData = new FormData();
         formData.append("readMessages", JSON.stringify(visibleMessages));
         formData.append("dialog_id", dialog.id);
-        await axios.patch("http://localhost:4444/api/messages", {
+        await axios.patch("https://chatconnectapp.netlify.app/api/messages", {
           dialog_id: dialog.id,
           readMessages: visibleMessages,
         });

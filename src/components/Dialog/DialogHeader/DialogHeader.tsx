@@ -10,7 +10,6 @@ export default function DialogHeader({ dialog }) {
   const dispatch = useDispatch();
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "users", dialog.mate.id), (doc) => {
-      console.log("Собеседник вышел: ");
       dispatch(
         choose({
           ...dialog,
@@ -22,8 +21,6 @@ export default function DialogHeader({ dialog }) {
       unsub();
     };
   }, [dialog.mate.online]);
-
-  console.log(dialog.mate.online);
 
   return (
     <div className={styles["dialog__header"]}>

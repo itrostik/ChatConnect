@@ -27,7 +27,7 @@ export default function InputFile({
       if (event.target.files[0])
         formData.append("image", event.target.files[0]);
       const response = await axios.post(
-        "http://localhost:4444/api/upload",
+        "https://chatconnectapp.netlify.app/api/upload",
         formData,
       );
       if (response.data.imageUrl) {

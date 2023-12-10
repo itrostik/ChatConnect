@@ -56,14 +56,17 @@ export default function Register({
   const onSubmit: SubmitHandler<InputsType> = async (data) => {
     setIsLoading(true);
     try {
-      const token = await axios.post("http://localhost:4444/api/users", {
-        login: data.login,
-        password: data.password,
-        username: data.username,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        avatarUrl: imageUrl,
-      });
+      const token = await axios.post(
+        "https://chatconnectapp.netlify.app/api/users",
+        {
+          login: data.login,
+          password: data.password,
+          username: data.username,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          avatarUrl: imageUrl,
+        },
+      );
       localStorage.setItem("token", JSON.stringify(token.data.token));
       localStorage.removeItem("data");
       setIsLoading(false);
@@ -105,7 +108,7 @@ export default function Register({
       const formData = new FormData();
       if (selectedFile) formData.append("image", selectedFile);
       const response = await axios.post(
-        "http://localhost:4444/api/upload",
+        "https://chatconnectapp.netlify.app/api/upload",
         formData,
       );
       if (response.data.imageUrl) {
