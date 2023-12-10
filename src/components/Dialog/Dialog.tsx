@@ -13,6 +13,7 @@ import Messages from "../Messages/Messages.tsx";
 import { MateType } from "../../../@types/mateType.ts";
 import { setIsScrolling } from "../../../redux/slices/messagesSlice.ts";
 import { MessageType } from "../../../@types/messageType.ts";
+import DialogHeader from "./DialogHeader/DialogHeader.tsx";
 export default function Dialog({
   dialog,
   user,
@@ -53,7 +54,7 @@ export default function Dialog({
         const mate = await axios.get<UserType>(
           `http://localhost:4444/api/users/${mateId}`,
         );
-        setMate(mate.data);
+        setMate({ ...mate.data, id: mateId });
         setIsLoading(false);
       };
       getMate();
@@ -68,19 +69,7 @@ export default function Dialog({
     <div className={styles["dialog"]}>
       {!isLoading && mate ? (
         <>
-          <div className={styles["dialog__header"]}>
-            <div className={styles["dialog__header-image"]}>
-              <img src={mate.avatarUrl} alt="avatar" />
-            </div>
-            <div className={styles["dialog__header-info"]}>
-              <div className={styles["dialog__header-name"]}>
-                {mate.username}
-              </div>
-              <div className={styles["dialog__header-time"]}>
-                был в сети 5 минут назад
-              </div>
-            </div>
-          </div>
+          <DialogHeader dialog={dialog} />
           <Messages user={user} />
         </>
       ) : (

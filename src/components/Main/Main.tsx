@@ -5,7 +5,8 @@ import Sidebar from "../Sidebar/Sidebar.tsx";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store.ts";
 import Dialog from "../Dialog/Dialog.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Main() {
   if (!localStorage.getItem("token")) {
@@ -14,6 +15,26 @@ export default function Main() {
   const dialog = useSelector((state: RootState) => state.dialog);
   const user = useSelector((state: RootState) => state.user);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const setOnline = async () => {
+      await axios.patch(`http://localhost:4444/api/users/`, {
+        userId: user.id,
+        online: true,
+      });
+    };
+    const setOffline = async () => {
+      await axios.patch(`http://localhost:4444/api/users/`, {
+        userId: user.id,
+        online: false,
+      });
+    };
+    setOnline();
+    return () => {
+      setOffline();
+    };
+  }, []);
+
   return (
     <div className={styles["main"]}>
       <Header user={user} />

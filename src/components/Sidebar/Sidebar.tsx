@@ -53,7 +53,7 @@ export default function Sidebar({
           dialogs.push({
             ...dialog,
             id: doc.id,
-            mate: mate.data,
+            mate: { ...mate.data, id: mateId },
             countNotRead,
           });
         else dialogs.push({ ...dialog, id: doc.id });
