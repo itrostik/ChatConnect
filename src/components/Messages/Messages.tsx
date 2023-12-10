@@ -82,13 +82,15 @@ export default function Messages({ user }: { user: UserType }) {
         }
       });
 
-      const formData = new FormData();
-      formData.append("readMessages", JSON.stringify(visibleMessages));
-      formData.append("dialog_id", dialog.id);
-      await axios.patch("http://localhost:4444/api/messages", {
-        dialog_id: dialog.id,
-        readMessages: visibleMessages,
-      });
+      if (visibleMessages.length > 0) {
+        const formData = new FormData();
+        formData.append("readMessages", JSON.stringify(visibleMessages));
+        formData.append("dialog_id", dialog.id);
+        await axios.patch("http://localhost:4444/api/messages", {
+          dialog_id: dialog.id,
+          readMessages: visibleMessages,
+        });
+      }
     }
   }
 
