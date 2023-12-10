@@ -37,7 +37,6 @@ export default function Sidebar({
       const dialogSize = querySnapshot.docs.length;
       querySnapshot.docs.map(async (doc, index) => {
         const dialog = doc.data();
-
         const mateId =
           dialog.user_id === user.id ? dialog.user2_id : dialog.user_id;
         const mate = await axios.get<UserType>(
@@ -67,10 +66,10 @@ export default function Sidebar({
             }
           });
           setDialogs(dialogs);
-          setIsLoading(false);
           localStorage.setItem("dialogs", JSON.stringify(dialogs));
         }
       });
+      setIsLoading(false);
     });
     return () => {
       unsub();
