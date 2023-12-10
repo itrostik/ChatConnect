@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store.ts";
 import axios from "axios";
 import InputFile from "../InputFile/InputFile.tsx";
+import { MessageType } from "../../../../@types/messageType.ts";
+import { choose } from "../../../../redux/slices/dialogSlice.ts";
 
 export default function Modal({ inputRef }) {
   const messages = useSelector((state: RootState) => state.messages);
@@ -20,20 +22,39 @@ export default function Modal({ inputRef }) {
   const dispatch = useDispatch();
 
   async function sendMessageWithImage() {
+    const inputValue = messages.messageValue;
+
+    dispatch(setImageUrl(null));
+    dispatch(setIsUpdate(false));
+    dispatch(setMessageValue(null));
+    dispatch(setReset(false));
     if (
       ((messages.imageUrl && !messages.isReset) ||
-        messages.messageValue.trim().length > 0) &&
+        inputValue.trim().length > 0) &&
       !messages.isUpdate
     ) {
-      await axios.post("http://localhost:4444/api/messages", {
-        dialog_id: dialog.id,
+      console.log(52);
+      const newMessage: MessageType = {
+        id: Math.random().toString(16).slice(2),
         sender_id: user.id,
-        messageText: messages.messageValue,
+        messageText: inputValue,
         imageUrl: messages.isReset ? null : messages.imageUrl,
+        isLoading: true,
+        created: Date.now(),
+        updated: false,
+        read: false,
+      };
+
+      dispatch(
+        choose({ ...dialog, messages: [...dialog.messages, newMessage] }),
+      );
+      await axios.post("http://localhost:4444/api/messages", {
+        newMessage,
+        dialog_id: dialog.id,
       });
     } else if (
       ((messages.imageUrl && !messages.isReset) ||
-        messages.messageValue.trim().length > 0) &&
+        inputValue.trim().length > 0) &&
       messages.isUpdate
       // activeMessage.messageText !== inputValue.trim()
     ) {
@@ -41,16 +62,11 @@ export default function Modal({ inputRef }) {
         dialog_id: dialog.id,
         sender_id: user.id,
         message_id: messages.activeMessage.id,
-        messageText: messages.messageValue,
+        messageText: inputValue,
         imageUrl: messages.isReset ? null : messages.imageUrl,
       });
     }
-    dispatch(setImageUrl(null));
-    dispatch(setIsUpdate(false));
-    dispatch(setMessageValue(null));
-    dispatch(setReset(false));
   }
-
   function resetImage() {
     dispatch(setReset(true));
   }

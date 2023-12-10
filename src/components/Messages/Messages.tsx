@@ -39,20 +39,29 @@ export default function Messages({ user }: { user: UserType }) {
     };
   }, []);
 
+  console.log(
+    scrollChat.current.scrollHeight,
+    scrollChat.current.scrollTop + scrollChat.current.clientHeight,
+  );
   useEffect(() => {
+    const lastMessageElement = document.getElementById(
+      dialog.messages[dialog.messages.length - 1].id,
+    );
     if (
       (scrollChat.current &&
         dialog.messages.length > 0 &&
         (dialog.messages[dialog.messages.length - 1].sender_id === user.id ||
           scrollChat.current.scrollTop + scrollChat.current.clientHeight >=
-            scrollChat.current.scrollHeight - 100) &&
+            scrollChat.current.scrollHeight -
+              100 -
+              lastMessageElement.scrollHeight) &&
         JSON.parse(localStorage.getItem("messages")).length <
           dialog.messages.length) ||
       messages.isScrolling
     ) {
       dispatch(setIsScrolling(false));
       scrollChat.current.scrollTo({
-        top: scrollChat?.current.scrollHeight,
+        top: scrollChat?.current.scrollHeight + lastMessageElement.clientHeight,
       });
     }
     localStorage.setItem("messages", JSON.stringify(dialog.messages));
@@ -80,12 +89,10 @@ export default function Messages({ user }: { user: UserType }) {
       const formData = new FormData();
       formData.append("readMessages", JSON.stringify(visibleMessages));
       formData.append("dialog_id", dialog.id);
-      const response = await axios.patch("http://localhost:4444/api/messages", {
+      await axios.patch("http://localhost:4444/api/messages", {
         dialog_id: dialog.id,
         readMessages: visibleMessages,
       });
-      console.log(response.data);
-      console.log("Sending request to server with:", visibleMessages);
     }
   }
 
@@ -94,7 +101,11 @@ export default function Messages({ user }: { user: UserType }) {
       <div
         className={styles["dialog__messages"]}
         ref={scrollChat}
-        onScroll={handleDebounce}
+        onScroll={
+          !dialog.messages.find((message) => message.isLoading)
+            ? handleDebounce
+            : () => {}
+        }
       >
         {dialog.messages.map((message) => {
           if (message.sender_id === user.id) {
