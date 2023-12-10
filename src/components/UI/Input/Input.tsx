@@ -9,6 +9,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store.ts";
 import InputFile from "../../Messages/InputFile/InputFile.tsx";
+import { choose } from "../../../../redux/slices/dialogSlice.ts";
+import { MessageType } from "../../../../@types/messageType.ts";
 
 export default function Input({ inputRef }) {
   const dispatch = useDispatch();
@@ -17,27 +19,42 @@ export default function Input({ inputRef }) {
   const dialog = useSelector((state: RootState) => state.dialog);
   const user = useSelector((state: RootState) => state.user);
   async function sendMessage() {
-    if (inputRef.current.value.trim().length > 0 && !messages.isUpdate) {
-      await axios.post("http://localhost:4444/api/messages", {
-        dialog_id: dialog.id,
+    const inputValue = inputRef.current.value;
+
+    inputRef.current.value = "";
+    if (inputValue.trim().length > 0 && !messages.isUpdate) {
+      const newMessage: MessageType = {
+        id: Math.random().toString(16).slice(2),
         sender_id: user.id,
-        messageText: inputRef.current.value,
+        messageText: inputValue,
         imageUrl: null,
+        isLoading: true,
+        created: Date.now(),
+        updated: false,
+        read: false,
+      };
+      dispatch(
+        choose({ ...dialog, messages: [...dialog.messages, newMessage] }),
+      );
+      console.log("что происходит?");
+      const response = await axios.post("http://localhost:4444/api/messages", {
+        newMessage,
+        dialog_id: dialog.id,
       });
+      console.log(response.data);
     } else if (
-      inputRef.current.value.trim().length > 0 &&
+      inputValue.trim().length > 0 &&
       messages.isUpdate &&
-      messages.activeMessage.messageText !== inputRef.current.value.trim()
+      messages.activeMessage.messageText !== inputValue.trim()
     ) {
       await axios.put("http://localhost:4444/api/messages", {
         dialog_id: dialog.id,
         sender_id: user.id,
         message_id: messages.activeMessage.id,
-        messageText: inputRef.current.value,
+        messageText: inputValue,
         imageUrl: null,
       });
     }
-    inputRef.current.value = "";
     dispatch(setImageUrl(null));
     dispatch(setIsUpdate(false));
     dispatch(setMessageValue(null));

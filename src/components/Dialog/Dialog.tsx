@@ -24,7 +24,6 @@ export default function Dialog({
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
-    localStorage.setItem("messages", JSON.stringify(dialog.messages));
     const unsub = onSnapshot(doc(db, "dialogs", dialog.id), (doc) => {
       const countNotRead = dialog.messages.reduce(
         (accumulator: number, message: MessageType) => {
@@ -35,10 +34,10 @@ export default function Dialog({
         },
         0,
       );
-      console.log(countNotRead);
       dispatch(
         choose({ ...doc.data(), id: doc.id, mate: dialog.mate, countNotRead }),
       );
+      localStorage.setItem("messages", JSON.stringify(dialog.messages));
     });
     return () => {
       unsub();
@@ -62,6 +61,7 @@ export default function Dialog({
     } else {
       setMate(dialog.mate);
       dispatch(setIsScrolling(true));
+      localStorage.setItem("messages", JSON.stringify(dialog.messages));
     }
   }, [dialog.id]);
   return (
