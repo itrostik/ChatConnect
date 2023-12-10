@@ -68,9 +68,9 @@ export default function MessageUser({ message, inputRef }) {
             ) : (
               ""
             )}
-            <div className={styles["message-user__textMessage"]}>
+            <span className={styles["message-user__textMessage"]}>
               {message.messageText}
-            </div>
+            </span>
           </div>
           <svg
             width="11"
@@ -83,6 +83,11 @@ export default function MessageUser({ message, inputRef }) {
             <path d="M4 0L0 4.8L11 8L4 0Z" fill="#00d3ff" />
           </svg>
           <div className={styles["message-user__time"]}>
+            {message.updated ? (
+              <div className={styles["message-user__edited"]}>(изменено)</div>
+            ) : (
+              ""
+            )}
             {getDate(message.created)}
 
             <svg
@@ -114,11 +119,6 @@ export default function MessageUser({ message, inputRef }) {
               ></path>
             </svg>
           </div>
-          {message.updated ? (
-            <div className={styles["message-user__edited"]}>(изменено)</div>
-          ) : (
-            ""
-          )}
           {messages.activeMessage?.id === message.id && messages.isOpenModal ? (
             <div className={styles["message-user__modal"]}>
               <div

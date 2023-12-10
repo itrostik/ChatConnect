@@ -12,7 +12,9 @@ export default function MessageMate({ message }) {
         ) : (
           ""
         )}
-        {message.messageText}
+        <div className={styles["message-user__textMessage"]}>
+          {message.messageText}
+        </div>
       </div>
       <svg
         width="11"
@@ -24,13 +26,13 @@ export default function MessageMate({ message }) {
       >
         <path d="M7 0L11 4.5L0 7.5L7 0Z" fill="#7C00A9" />
       </svg>
-      {message.updated ? (
-        <div className={styles["message-mate__edited"]}>(изменено)</div>
-      ) : (
-        ""
-      )}
       <div className={styles["message-user__time"]}>
         {getDate(message.created)}
+        {message.updated ? (
+          <div className={styles["message-mate__edited"]}>(изменено)</div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
