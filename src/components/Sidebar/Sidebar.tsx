@@ -35,40 +35,45 @@ export default function Sidebar({
     const unsub = onSnapshot(q, (querySnapshot) => {
       let dialogs = [];
       const dialogSize = querySnapshot.docs.length;
-      querySnapshot.docs.map(async (doc, index) => {
-        const dialog = doc.data();
-        const mateId =
-          dialog.user_id === user.id ? dialog.user2_id : dialog.user_id;
-        const mate = await axios.get<UserType>(
-          `https://chatconnectapp.netlify.app/api/users/${mateId}`,
-        );
-        const countNotRead = dialog.messages.reduce((accum, message) => {
-          if (message.sender_id === mateId && !message.read) {
-            accum++;
-          }
-          return accum;
-        }, 0);
-        if (mate.data)
-          dialogs.push({
-            ...dialog,
-            id: doc.id,
-            mate: { ...mate.data, id: mateId },
-            countNotRead,
-          });
-        else dialogs.push({ ...dialog, id: doc.id });
-        if (index + 1 === dialogSize) {
-          dialogs = dialogs.sort((a, b) => {
-            if (a.messages.length > 0 && b.messages.length > 0) {
-              return (
-                b.messages[b.messages.length - 1].created -
-                a.messages[a.messages.length - 1].created
-              );
+      if (dialogSize > 0) {
+        querySnapshot.docs.map(async (doc, index) => {
+          const dialog = doc.data();
+          const mateId =
+            dialog.user_id === user.id ? dialog.user2_id : dialog.user_id;
+          const mate = await axios.get<UserType>(
+            `https://chatconnectapp.netlify.app/api/users/${mateId}`,
+          );
+          const countNotRead = dialog.messages.reduce((accum, message) => {
+            if (message.sender_id === mateId && !message.read) {
+              accum++;
             }
-          });
-          setDialogs(dialogs);
-          localStorage.setItem("dialogs", JSON.stringify(dialogs));
-        }
-      });
+            return accum;
+          }, 0);
+          if (mate.data)
+            dialogs.push({
+              ...dialog,
+              id: doc.id,
+              mate: { ...mate.data, id: mateId },
+              countNotRead,
+            });
+          else dialogs.push({ ...dialog, id: doc.id });
+          if (index + 1 === dialogSize) {
+            dialogs = dialogs.sort((a, b) => {
+              if (a.messages.length > 0 && b.messages.length > 0) {
+                return (
+                  b.messages[b.messages.length - 1].created -
+                  a.messages[a.messages.length - 1].created
+                );
+              }
+            });
+            setDialogs(dialogs);
+            localStorage.setItem("dialogs", JSON.stringify(dialogs));
+          }
+        });
+      } else {
+        setDialogs(dialogs);
+        localStorage.setItem("dialogs", JSON.stringify(dialogs));
+      }
       setIsLoading(false);
     });
     return () => {
