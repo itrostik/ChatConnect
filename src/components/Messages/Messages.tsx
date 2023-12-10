@@ -40,9 +40,12 @@ export default function Messages({ user }: { user: UserType }) {
   }, []);
 
   useEffect(() => {
-    const lastMessageElement = document.getElementById(
-      dialog.messages[dialog.messages.length - 1].id,
-    );
+    let lastMessageElement = null;
+    if (dialog.messages.length > 0) {
+      lastMessageElement = document.getElementById(
+        dialog.messages[dialog.messages.length - 1].id,
+      );
+    }
     if (
       (scrollChat.current &&
         dialog.messages.length > 0 &&
@@ -50,14 +53,15 @@ export default function Messages({ user }: { user: UserType }) {
           scrollChat.current.scrollTop + scrollChat.current.clientHeight >=
             scrollChat.current.scrollHeight -
               100 -
-              lastMessageElement.scrollHeight) &&
+              lastMessageElement?.scrollHeight) &&
         JSON.parse(localStorage.getItem("messages")).length <
           dialog.messages.length) ||
       messages.isScrolling
     ) {
       dispatch(setIsScrolling(false));
       scrollChat.current.scrollTo({
-        top: scrollChat?.current.scrollHeight + lastMessageElement.clientHeight,
+        top:
+          scrollChat?.current.scrollHeight + lastMessageElement?.clientHeight,
       });
     }
     localStorage.setItem("messages", JSON.stringify(dialog.messages));
