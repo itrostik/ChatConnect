@@ -1,5 +1,5 @@
 import styles from "./Sidebar.module.scss";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DialogType } from "../../../@types/dialogType.ts";
 import { MateType } from "../../../@types/mateType.ts";
 import { collection, onSnapshot, or, where, query } from "firebase/firestore";
@@ -12,18 +12,12 @@ import ContentLoader from "react-content-loader";
 import { MessageType } from "../../../@types/messageType.ts";
 import { getDate } from "../../../utils/date.ts";
 
-export default function Sidebar({
-  user,
-  isLoading,
-  setIsLoading,
-}: {
-  user: UserType;
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<boolean>;
-}) {
+export default function Sidebar({ user }: { user: UserType }) {
   const [dialogs, setDialogs] = useState<(DialogType & MateType)[] | null>(
     JSON.parse(localStorage.getItem("dialogs")),
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -66,13 +60,13 @@ export default function Sidebar({
                 );
               }
             });
-            setDialogs(dialogs);
-            localStorage.setItem("dialogs", JSON.stringify(dialogs));
           }
+          localStorage.setItem("dialogs", JSON.stringify(dialogs));
+          setDialogs(JSON.parse(localStorage.getItem("dialogs")));
         });
       } else {
-        setDialogs(dialogs);
         localStorage.setItem("dialogs", JSON.stringify(dialogs));
+        setDialogs(JSON.parse(localStorage.getItem("dialogs")));
       }
       setIsLoading(false);
     });
@@ -87,6 +81,8 @@ export default function Sidebar({
     // const { mate, ...dialogItem } = dialog;
     dispatch(choose(dialog));
   }
+
+  console.log(isLoading, dialogs);
 
   function search() {
     if (inputRef.current.value.trim().length > 0) {
@@ -113,7 +109,7 @@ export default function Sidebar({
 
   return (
     <>
-      {!isLoading ? (
+      {!isLoading && dialogs ? (
         <div className={styles["sidebar"]}>
           <div className={styles["sidebar__search"]}>
             <label>
@@ -145,48 +141,47 @@ export default function Sidebar({
               </div>
             </label>
           </div>
-          {dialogs &&
-            dialogs.map((dialog) => (
-              <div
-                key={dialog.id}
-                className={styles["dialog"]}
-                onClick={() => chooseDialog(dialog)}
-              >
-                <div className={styles["dialog__image"]}>
-                  <img src={dialog.mate.avatarUrl} alt="" />
+          {dialogs.map((dialog) => (
+            <div
+              key={dialog.id}
+              className={styles["dialog"]}
+              onClick={() => chooseDialog(dialog)}
+            >
+              <div className={styles["dialog__image"]}>
+                <img src={dialog.mate.avatarUrl} alt="" />
+              </div>
+              <div className={styles["dialog__info"]}>
+                <div className={styles["dialog__username"]}>
+                  {dialog.mate.username}
                 </div>
-                <div className={styles["dialog__info"]}>
-                  <div className={styles["dialog__username"]}>
-                    {dialog.mate.username}
+                <div className={styles["dialog__lastmessage"]}>
+                  <div className={styles["dialog__lastmessage-text"]}>
+                    {dialog.messages.length > 0
+                      ? getLastMessage(dialog.messages).sender_id === user.id
+                        ? "Вы: " +
+                          setLastMessageInSidebar(
+                            getLastMessage(dialog.messages).messageText,
+                          )
+                        : setLastMessageInSidebar(
+                            getLastMessage(dialog.messages).messageText,
+                          )
+                      : ""}
                   </div>
-                  <div className={styles["dialog__lastmessage"]}>
-                    <div className={styles["dialog__lastmessage-text"]}>
+                  {dialog.countNotRead > 0 ? (
+                    <div className={styles["dialog__notRead"]}>
+                      {dialog.countNotRead}
+                    </div>
+                  ) : (
+                    <div className={styles["dialog__lastmessage-time"]}>
                       {dialog.messages.length > 0
-                        ? getLastMessage(dialog.messages).sender_id === user.id
-                          ? "Вы: " +
-                            setLastMessageInSidebar(
-                              getLastMessage(dialog.messages).messageText,
-                            )
-                          : setLastMessageInSidebar(
-                              getLastMessage(dialog.messages).messageText,
-                            )
+                        ? getDate(getLastMessage(dialog.messages).created)
                         : ""}
                     </div>
-                    {dialog.countNotRead > 0 ? (
-                      <div className={styles["dialog__notRead"]}>
-                        {dialog.countNotRead}
-                      </div>
-                    ) : (
-                      <div className={styles["dialog__lastmessage-time"]}>
-                        {dialog.messages.length > 0
-                          ? getDate(getLastMessage(dialog.messages).created)
-                          : ""}
-                      </div>
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       ) : (
         <ContentLoader
