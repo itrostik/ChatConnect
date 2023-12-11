@@ -79,7 +79,7 @@ export default function Sidebar({
     return () => {
       unsub();
     };
-  }, [user.id]);
+  }, []);
   function getLastMessage(messages: MessageType[]): MessageType {
     return messages[messages.length - 1];
   }

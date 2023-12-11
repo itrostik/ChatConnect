@@ -53,9 +53,7 @@ export default function Messages({ user }: { user: UserType }) {
           scrollChat.current.scrollTop + scrollChat.current.clientHeight >=
             scrollChat.current.scrollHeight -
               100 -
-              lastMessageElement?.scrollHeight) &&
-        JSON.parse(localStorage.getItem("messages")).length <
-          dialog.messages.length) ||
+              lastMessageElement?.scrollHeight)) ||
       messages.isScrolling
     ) {
       dispatch(setIsScrolling(false));

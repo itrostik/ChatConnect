@@ -59,6 +59,7 @@ export default function Main() {
             dialog={dialog}
             user={user}
             isDialogLoading={isDialogLoading}
+            setIsDialogLoading={setIsDialogLoading}
           />
         ) : !isLoading ? (
           <div className={styles["main__content-dialog"]}>
