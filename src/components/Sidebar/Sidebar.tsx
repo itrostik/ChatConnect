@@ -82,8 +82,6 @@ export default function Sidebar({ user }: { user: UserType }) {
     dispatch(choose(dialog));
   }
 
-  console.log(isLoading, dialogs);
-
   function search() {
     if (inputRef.current.value.trim().length > 0) {
       setDialogs(
@@ -186,22 +184,23 @@ export default function Sidebar({ user }: { user: UserType }) {
       ) : (
         <ContentLoader
           speed={2}
-          width={550}
+          width={350}
           height={280}
-          viewBox="0 0 550 280"
+          viewBox="0 0 350 280"
           backgroundColor="#d9d9d9"
           foregroundColor="#ededed"
+          className={styles["loader"]}
         >
-          <circle cx="20" cy="20" r="20" />
-          <rect x="50" y="0" rx="4" ry="4" width="500" height="40" />
-          <circle cx="20" cy="65" r="20" />
-          <rect x="50" y="45" rx="4" ry="4" width="500" height="40" />
-          <circle cx="20" cy="110" r="20" />
-          <rect x="50" y="90" rx="4" ry="4" width="500" height="40" />
-          <circle cx="20" cy="155" r="20" />
-          <rect x="50" y="135" rx="4" ry="4" width="500" height="40" />
-          <circle cx="20" cy="200" r="20" />
-          <rect x="50" y="180" rx="4" ry="4" width="500" height="40" />
+          <circle cx="20" cy="15" r="15" />
+          <rect x="50" y="0" rx="4" ry="4" width="270" height="30" />
+          <circle cx="20" cy="60" r="15" />
+          <rect x="50" y="45" rx="4" ry="4" width="270" height="30" />
+          <circle cx="20" cy="105" r="15" />
+          <rect x="50" y="90" rx="4" ry="4" width="270" height="30" />
+          <circle cx="20" cy="150" r="15" />
+          <rect x="50" y="135" rx="4" ry="4" width="270" height="30" />
+          <circle cx="20" cy="195" r="15" />
+          <rect x="50" y="180" rx="4" ry="4" width="270" height="30" />
         </ContentLoader>
       )}
     </>
